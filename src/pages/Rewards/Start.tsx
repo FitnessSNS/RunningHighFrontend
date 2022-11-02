@@ -1,0 +1,64 @@
+/** @jsxImportSource @emotion/react */
+import React, { useState } from "react";
+import * as styles from "./css/startStyles";
+import { useDispatch } from "react-redux";
+import { changeProcess } from "src/recuders/rewards";
+import running from "../../assets/running.svg";
+import runningwithus from "../../assets/runningwithus.svg";
+import information from "../../assets/information.svg";
+
+export const Start = () => {
+  const [checked, setChecked] = useState(false);
+  const dispatch = useDispatch();
+
+  return (
+    <section css={styles.containerStyle}>
+      <div css={styles.rewardStyle}>
+        <h1 css={styles.titleStyle}>
+          시작하실 운동유형을
+          <br /> 선택해주세요!
+        </h1>
+        {EXERCISE_TYPES.map((exercise) => (
+          <div
+            key={exercise.id}
+            css={styles.boxStyle}
+            onClick={() => {
+              dispatch(changeProcess("running"));
+            }}
+          >
+            <img src={exercise.imgUrl} style={{ width: 52, height: 52 }} />
+            <div css={styles.textStyle}>
+              <h2>{exercise.title}</h2>
+              <p>{exercise.subtitle}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div css={styles.checkBoxStyle({ checked })}>
+        <label htmlFor="checkbox" />
+        <input
+          type="checkbox"
+          id="checkbox"
+          onChange={(): void => setChecked(!checked)}
+        />
+        <p>선택한 운동으로 다음에도 계속하기</p>
+        <img src={information} alt="info" />
+      </div>
+    </section>
+  );
+};
+
+const EXERCISE_TYPES = [
+  {
+    id: 1,
+    title: "개인 운동",
+    subtitle: "혼자서 자유롭게 운동 시작하기",
+    imgUrl: running,
+  },
+  {
+    id: 2,
+    title: "그룹 운동",
+    subtitle: "친구들과 함께 운동 시작하기",
+    imgUrl: runningwithus,
+  },
+];
