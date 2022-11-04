@@ -9,12 +9,14 @@ import { loginValidation } from "src/libs/validations/loginValidation";
 import { localLogin } from "src/actions/user";
 import { AppDispatch, RootState } from "src/app/store";
 
+import Title from "src/components/Title";
 import Input from "src/components/Input";
 import ValidationMessage from "src/components/ValidationMessage";
 import Button from "src/components/Button";
 import ModalAlert from "src/components/ModalAlert";
 
 import * as styles from "./styles";
+import logo from "src/assets/logo.svg";
 import kakao from "src/assets/kakao.svg";
 
 type formData = {
@@ -83,7 +85,10 @@ export const Login = () => {
   return (
     <section css={styles.container}>
       <section css={styles.topContainer}>
-        <div css={styles.imgBlock}></div>
+        <div css={styles.imgBlock}>
+          <img src={logo} alt="아이콘" />
+        </div>
+        <Title img={false}>함께 달릴 준비 되셨나요?</Title>
         <form css={styles.formBlock}>
           <Input
             placeholder="이메일 주소"

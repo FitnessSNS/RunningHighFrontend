@@ -13,10 +13,7 @@ export const topContainer = css`
 `;
 
 export const imgBlock = css`
-  width: 250px;
-  height: 100px;
-  background-color: rgba(255, 0, 0, 0.2);
-  margin: 0 auto;
+  display: block;
 `;
 
 export const formBlock = css`
@@ -81,7 +78,7 @@ export const list = css`
   justify-content: center;
   margin: 15px 0;
   li {
-    padding: 0 20px;
+    padding: 0 14px;
     font-size: 14px;
     font-weight: 400;
     color: #888888;
