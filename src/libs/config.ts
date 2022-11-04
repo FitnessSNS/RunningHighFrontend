@@ -2,8 +2,10 @@ import axios, { AxiosInstance } from "axios";
 
 const instance: AxiosInstance = axios.create({
   baseURL: "https://www.sosocamp.shop",
+  withCredentials: true,
   timeout: 2000,
   headers: {
+    Accept: "*/*",
     "Content-Type": "application/json",
   },
 });

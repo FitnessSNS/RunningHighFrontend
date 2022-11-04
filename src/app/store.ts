@@ -1,4 +1,4 @@
-import { rootReducer } from "./../recuders";
+import { rootReducer } from "../reducers";
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import {
   FLUSH,

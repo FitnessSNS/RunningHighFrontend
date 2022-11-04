@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import * as styles from "./styles";
 import { useSelector } from "react-redux";
-import { RewardState } from "src/recuders/rewards";
+import { RewardState } from "src/reducers/rewards";
 import home from "../../assets/home.svg";
 import store from "../../assets/store.svg";
 import runStart from "../../assets/runStart.svg";

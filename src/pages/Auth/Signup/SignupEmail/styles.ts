@@ -23,8 +23,8 @@ export const button = css`
   position: absolute;
   width: 72px;
   height: 30px;
-  left: 243px;
-  top: 12px;
+  right: 14px;
+  top: 14px;
   background-color: #f0f0f3;
   border: none;
   border-radius: 6px;
@@ -39,7 +39,7 @@ export const timerBlock = css`
   position: absolute;
   width: 30px;
   height: 14px;
-  left: 285px;
+  right: 14px;
   top: 22px;
   font-size: 14px;
   font-weight: 400;

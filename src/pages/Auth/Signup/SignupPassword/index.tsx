@@ -14,7 +14,7 @@ import Button from "src/components/Button";
 
 import * as styles from "./styles";
 import { signupPwdValidation } from "src/libs/validations/singupPwdValidation";
-import { getPassword } from "src/recuders/user";
+import { getPassword } from "src/reducers/user";
 import { AppDispatch } from "src/app/store";
 
 type formData = {
