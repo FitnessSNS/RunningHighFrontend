@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,10 +11,11 @@ import Title from "src/components/Title";
 import Input from "src/components/Input";
 import ValidationMessage from "src/components/ValidationMessage";
 import Button from "src/components/Button";
+import ModalAlert from "src/components/ModalAlert";
 
 import * as styles from "./styles";
 import { nicknameValidation } from "src/libs/validations/nicknameValidation";
-import { checkNickname, signupUser } from "src/actions/user";
+import { checkNickname, localSignUp } from "src/actions/user";
 import { AppDispatch, RootState } from "src/app/store";
 
 type formData = {
@@ -29,35 +30,20 @@ type changeData = {
 export const SignupNickname = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const {
-    nickname,
-    nicknameDone,
-    nicknameError,
-    password,
-    signup,
-    signupDone,
-    signupError,
-  } = useSelector((state: RootState) => state.user);
-  const [error, setError] = useState<string>("");
 
-  useEffect(() => {
-    if (nicknameDone) {
-      console.log(nickname);
-    }
-  }, [nicknameDone]);
+  const [nicknameAction, setNicknameAction] = useState<boolean>(false);
+  const [signupAction, setSignupAction] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
 
-  useEffect(() => {
-    if (signupDone) {
-      console.log(signup);
-      navigate("/signupend");
-    }
-  }, [signupDone]);
+  const { email, nickname, password, signUp } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const {
     register,
     setValue,
     getValues,
-    handleSubmit,
     reset,
     formState: { isValid, errors },
   } = useForm<formData>({
@@ -68,21 +54,52 @@ export const SignupNickname = () => {
     setValue(name, value, { shouldValidate: true });
   };
 
-  const handleSubmitClick = (data: formData) => {
-    //api 연결
-    dispatch(checkNickname(data));
+  const handleSubmitClick = () => {
+    dispatch(checkNickname({ nickname: getValues("nickname") }));
+    setNicknameAction(true);
     reset();
   };
 
   const handleBtnClick = () => {
-    //api 연결
     dispatch(
-      signupUser({
-        nickname: "",
+      localSignUp({
+        email: email.result.userEmail,
+        nickname: nickname.result.nickname,
         password: password,
       })
     );
+    setSignupAction(true);
   };
+
+  const handleModal = useCallback(() => {
+    setModal(!modal);
+    if (nicknameAction) {
+      setNicknameAction(false);
+    } else if (signupAction) {
+      setSignupAction(false);
+      navigate("/login");
+    }
+  }, [modal, navigate, nicknameAction, signupAction]);
+
+  useEffect(() => {
+    if (nicknameAction) {
+      if (!nickname?.isSuccess) {
+        setModal(true);
+        setModalTitle(nickname?.message);
+      }
+    }
+  }, [nicknameAction, nickname]);
+
+  useEffect(() => {
+    if (signupAction) {
+      if (!signUp?.isSuccess) {
+        setModal(true);
+        setModalTitle(signUp?.message);
+      } else if (signUp?.isSuccess) {
+        navigate("/signupend");
+      }
+    }
+  }, [signupAction, signUp, navigate]);
 
   return (
     <>
@@ -102,7 +119,7 @@ export const SignupNickname = () => {
             />
             <button
               css={styles.button}
-              onClick={handleSubmit(handleSubmitClick)}
+              onClick={handleSubmitClick}
               disabled={!isValid}
             >
               인증요청
@@ -112,15 +129,21 @@ export const SignupNickname = () => {
         </section>
         <section css={styles.bottomContainer}>
           <Button
-            style={nicknameDone ? "primary" : "gray"}
+            style={nickname?.isSuccess ? "primary" : "gray"}
             size="large"
             onClick={handleBtnClick}
-            disabled={!nicknameDone}
+            disabled={!nickname?.isSuccess}
           >
             회원가입 완료
           </Button>
         </section>
       </section>
+      <ModalAlert
+        isOpen={modal}
+        title={modalTitle}
+        buttonTitle="확인"
+        onClick={handleModal}
+      />
     </>
   );
 };

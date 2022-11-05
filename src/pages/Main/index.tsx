@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import * as styles from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeProcess, RewardState } from "src/recuders/rewards";
+import { changeProcess, RewardState } from "src/reducers/rewards";
 import face from "../../assets/face.svg";
 import chart from "../../assets/chart.svg";
 import chartCup from "../../assets/chartCup.svg";

@@ -19,8 +19,8 @@ export const button = css`
   position: absolute;
   width: 72px;
   height: 30px;
-  left: 243px;
-  top: 12px;
+  right: 14px;
+  top: 14px;
   background-color: #f0f0f3;
   border: none;
   border-radius: 6px;

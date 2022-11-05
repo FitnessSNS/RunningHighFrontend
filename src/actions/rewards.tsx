@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RewardState } from "@/recuders/rewards";
+import { RewardState } from "src/reducers/rewards";
 
 // export const getRewardAsync = createAsyncThunk(
 //   "GET_REWARDS",

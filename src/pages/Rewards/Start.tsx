@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import * as styles from "./css/startStyles";
 import { useDispatch } from "react-redux";
-import { changeProcess } from "src/recuders/rewards";
+import { changeProcess } from "src/reducers/rewards";
 import running from "../../assets/running.svg";
 import runningwithus from "../../assets/runningwithus.svg";
 import information from "../../assets/information.svg";

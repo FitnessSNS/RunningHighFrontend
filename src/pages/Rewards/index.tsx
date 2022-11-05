@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RewardState } from "src/recuders/rewards";
+import { RewardState } from "src/reducers/rewards";
 import Complete from "./Complete";
 import Photo from "./Photo";
 import Running from "./Running";

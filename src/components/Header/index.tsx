@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import * as styles from "./styles";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeProcess, RewardState } from "src/recuders/rewards";
+import { changeProcess, RewardState } from "../../reducers/rewards";
 import back from "../../assets/back.svg";
 import coin from "../../assets/coin.svg";
 
@@ -37,6 +38,7 @@ export const Header = () => {
 };
 
 const HeaderContainer = () => {
+  const location = useLocation();
   return (
     <>
       <h1>
@@ -53,7 +55,11 @@ const HeaderContainer = () => {
       </h1>
       <div css={{ display: "flex" }}>
         <div css={styles.pointStyle}>
-          <img src={coin} css={{ heihgt: "15px", objectFit: "contain" }} />
+          <img
+            src={coin}
+            css={{ heihgt: "15px", objectFit: "contain" }}
+            alt="포인트"
+          />
           <p className="myPoint">1,200</p>
         </div>
         <div css={styles.menuStyle} />
