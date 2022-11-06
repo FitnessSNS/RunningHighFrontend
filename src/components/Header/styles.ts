@@ -1,13 +1,15 @@
-import { css } from "@emotion/react";
-import menu from "../../assets/menu.svg";
-import close from "../../assets/icon/ico_close.svg";
+import { css } from '@emotion/react';
+import menu from '../../assets/menu.svg';
+import close from '../../assets/icon/ico_close.svg';
 
 export const navStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 21px;
+  /* width: 100%; */
   height: 58px;
+  outline: 2px solid red;
 `;
 
 export const pointStyle = css`
@@ -17,7 +19,7 @@ export const pointStyle = css`
   align-items: flex-start;
   padding: 10px 14px;
 
-  width: 81px;
+  /* width: 81px; */
   height: 35px;
 
   border: 1px solid #dddddd;
@@ -26,11 +28,7 @@ export const pointStyle = css`
   box-sizing: border-box;
 
   .myPoint {
-    font-family: "Pretendard-Regular";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 17px;
+    ${theme.fontStyle('Pretendard-Regular', 'normal', '500', '13px', '17px')};
     text-align: right;
   }
 `;
