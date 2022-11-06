@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import * as styles from "./styles";
-import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { changeProcess, RewardState } from "../../reducers/rewards";
-import back from "../../assets/back.svg";
-import coin from "../../assets/coin.svg";
+import React from 'react';
+import * as styles from './styles';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeProcess, RewardState } from 'src/reducers/rewards';
+import back from 'src/assets/back.svg';
+import coin from 'src/assets/coin.svg';
+import logo from 'src/assets/logo.svg';
 
 type clickFuncType = {
   onClick: () => {
@@ -19,11 +20,10 @@ export const Header = () => {
     (state: { rewards: RewardState }) => state.rewards.process
   );
   const dispatch = useDispatch();
-  const handlePage = () => dispatch(changeProcess("start"));
+  const handlePage = () => dispatch(changeProcess('start'));
 
   return (
     <nav css={styles.navStyle}>
-      <HeaderContainer />
       {
         {
           main: <HeaderContainer />,
@@ -43,21 +43,20 @@ const HeaderContainer = () => {
     <>
       <h1>
         {location.pathname.length > 1 ? (
-          <a href="/" css={{ cursor: "pointer" }}>
+          <a href="/" css={{ cursor: 'pointer' }}>
             <img src={back} alt="뒤로가기" />
           </a>
         ) : (
-          <a href="/" css={{ cursor: "pointer" }}>
-            로고
-            <img src="" alt="" />
+          <a href="/" css={{ cursor: 'pointer' }}>
+            <img src={logo} alt="logo" />
           </a>
         )}
       </h1>
-      <div css={{ display: "flex" }}>
+      <div css={{ display: 'flex' }}>
         <div css={styles.pointStyle}>
           <img
             src={coin}
-            css={{ heihgt: "15px", objectFit: "contain" }}
+            css={{ heihgt: '15px', objectFit: 'contain' }}
             alt="포인트"
           />
           <p className="myPoint">1,200</p>
