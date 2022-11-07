@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeProcess, RewardState } from 'src/reducers/rewards';
 import back from 'src/assets/back.svg';
 import coin from 'src/assets/coin.svg';
-import logo from 'src/assets/logo.svg';
+import mainLogo from 'src/assets/mainLogo.svg';
 
 type clickFuncType = {
   onClick: () => {
@@ -48,7 +48,7 @@ const HeaderContainer = () => {
           </a>
         ) : (
           <a href="/" css={{ cursor: 'pointer' }}>
-            <img src={logo} alt="logo" />
+            <img src={mainLogo} alt="logo" />
           </a>
         )}
       </h1>

@@ -1,5 +1,5 @@
-import { Global, css } from "@emotion/react";
-import reset from "styled-reset";
+import { Global, css } from '@emotion/react';
+import reset from 'styled-reset';
 
 export const GlobalStyle = () => (
   <Global
