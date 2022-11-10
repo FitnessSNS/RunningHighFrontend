@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { changeProcess } from 'src/reducers/rewards';
-import { runStart } from './api';
-import { distanceStyle } from '../Main/styles';
-import * as styles from './css/runningStyles';
-import runAlone from 'src/assets/runAlone.svg';
-import clock from 'src/assets/icon/ico_clock.svg';
-import play from 'src/assets/icon/btn_play.svg';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { changeProcess } from "src/reducers/rewards";
+import { runStart } from "./api";
+import { distanceStyle } from "../Main/styles";
+import * as styles from "./css/runningStyles";
+import runAlone from "src/assets/runAlone.svg";
+import clock from "src/assets/icon/ico_clock.svg";
+import play from "src/assets/icon/btn_play.svg";
 
 export default function Running() {
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
@@ -25,12 +25,12 @@ export default function Running() {
   };
 
   const notFoundLocation = () => {
-    alert('위치를 찾을 수 없습니다.');
+    alert("위치를 찾을 수 없습니다.");
   };
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      alert('브라우저에서 위치를 허용해주세요.');
+      alert("브라우저에서 위치를 허용해주세요.");
     } else {
       navigator.geolocation.getCurrentPosition(
         findUserLocation,
@@ -71,7 +71,7 @@ export default function Running() {
         <div
           css={styles.btnRoundStyle(play)}
           onClick={() => {
-            dispatch(changeProcess('photo'));
+            dispatch(changeProcess("photo"));
           }}
         />
       </div>

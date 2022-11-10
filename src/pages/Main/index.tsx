@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from 'react';
-import * as styles from './styles';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeProcess, RewardState } from 'src/reducers/rewards';
-import face from 'src/assets/face.svg';
-import chart from 'src/assets/chart.svg';
-import chartCup from 'src/assets/chartCup.svg';
-import btnArrow from 'src/assets/btn_arrow.svg';
+import React, { useEffect } from "react";
+import * as styles from "./styles";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeProcess, RewardState } from "src/reducers/rewards";
+import face from "src/assets/face.svg";
+import chart from "src/assets/chart.svg";
+import chartCup from "src/assets/chartCup.svg";
+import btnArrow from "src/assets/btn_arrow.svg";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -17,9 +17,9 @@ export const Main = () => {
   );
 
   useEffect(() => {
-    const process = localStorage.getItem('persist:root');
+    const process = localStorage.getItem("persist:root");
     if (!process) {
-      dispatch(changeProcess('main'));
+      dispatch(changeProcess("main"));
     }
   }, [process]);
   console.log(process);
@@ -45,8 +45,8 @@ export const Main = () => {
           css={styles.btnCommon}
           className="btnStart"
           onClick={() => {
-            navigate('/reward');
-            dispatch(changeProcess('start'));
+            navigate("/reward");
+            dispatch(changeProcess("start"));
           }}
         >
           <span css={{ paddingLeft: 28, fontWeight: 700, fontSize: 16 }}>

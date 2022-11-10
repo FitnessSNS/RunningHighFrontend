@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 type positionType = {
   longitude: number;
@@ -12,19 +12,19 @@ type photoType = {
 
 export const runStart = async (position: positionType) => {
   try {
-    const respone = await axios.post('/reward/running/start', position, {
+    const respone = await axios.post("/reward/running/start", position, {
       headers: {
         withCredentials: true,
         crossDomain: true,
-        credentials: 'include',
-        contentType: 'application/json',
+        credentials: "include",
+        contentType: "application/json",
       },
     });
 
     const accessToken = await respone.data;
 
     axios.defaults.headers.common[
-      'Authorization'
+      "Authorization"
     ] = `Bearer ${accessToken.token}`;
 
     document.cookie = `rst=${accessToken.token}`;
@@ -35,7 +35,7 @@ export const runStart = async (position: positionType) => {
 
 export const runCheck = async (position: positionType) => {
   try {
-    const response = await axios.post('/reward/running/chek', position);
+    const response = await axios.post("/reward/running/chek", position);
     return response;
   } catch (err) {
     console.error(err);
@@ -44,7 +44,7 @@ export const runCheck = async (position: positionType) => {
 
 export const runStop = async (position: positionType) => {
   try {
-    const response = await axios.post('/reward/running/stop', position);
+    const response = await axios.post("/reward/running/stop", position);
     return response;
   } catch (err) {
     console.error(err);
@@ -53,7 +53,7 @@ export const runStop = async (position: positionType) => {
 
 export const runEnd = async (position: positionType) => {
   try {
-    const response = await axios.post('/reward/running/end', position);
+    const response = await axios.post("/reward/running/end", position);
     return response;
   } catch (err) {
     console.error(err);
@@ -62,7 +62,7 @@ export const runEnd = async (position: positionType) => {
 
 export const uploadPhoto = async (photo: photoType) => {
   try {
-    const response = await axios.post('/reward/running/proofImage', photo);
+    const response = await axios.post("/reward/running/proofImage", photo);
     return response;
   } catch (err) {
     console.error(err);

@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RewardState } from 'src/reducers/rewards';
-import Complete from './Complete';
-import Photo from './Photo';
-import Running from './Running';
-import { Start } from './Start';
-import { persistor } from '../../index';
-import { Main } from '../Main';
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RewardState } from "src/reducers/rewards";
+import Complete from "./Complete";
+import Photo from "./Photo";
+import Running from "./Running";
+import { Start } from "./Start";
+import { persistor } from "../../index";
+import { Main } from "../Main";
 
 export const Rewards = () => {
   const process = useSelector(
@@ -22,7 +22,7 @@ export const Rewards = () => {
 
   useEffect(() => {
     window.onbeforeunload = () => {
-      console.log('초기화');
+      console.log("초기화");
       setTimeout(() => purge(), 200);
     };
   }, []);

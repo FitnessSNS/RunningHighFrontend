@@ -1,7 +1,7 @@
-import { css } from '@emotion/react';
-import { theme } from 'src/styles/theme';
-import start from 'src/assets/start.svg';
-import dashEllipse from 'src/assets/dashEllipse.svg';
+import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
+import start from "src/assets/start.svg";
+import dashEllipse from "src/assets/dashEllipse.svg";
 
 export const mainWrapper = css`
   position: relative;
@@ -11,7 +11,7 @@ export const mainWrapper = css`
 `;
 
 export const mainStyle = css`
-  ${theme.positionCenterX('absolute')};
+  ${theme.positionCenterX("absolute")};
   top: 14px;
   width: 335px;
   min-height: 438px;
@@ -21,7 +21,7 @@ export const mainStyle = css`
 `;
 
 export const graphStyle = css`
-  ${theme.positionCenterX('absolute')};
+  ${theme.positionCenterX("absolute")};
   top: 9.13%;
   width: 263px;
   height: 263px;
@@ -32,8 +32,8 @@ export const graphStyle = css`
   z-index: 0;
 
   :after {
-    content: '';
-    ${theme.positionCenter('absolute')};
+    content: "";
+    ${theme.positionCenter("absolute")};
     width: 235px;
     height: 235px;
     border-radius: 50%;
@@ -43,7 +43,7 @@ export const graphStyle = css`
 `;
 
 export const innerWrapper = css`
-  ${theme.positionCenter('absolute')};
+  ${theme.positionCenter("absolute")};
   width: 224px;
   height: 224px;
   background: url(${dashEllipse}) no-repeat center;
@@ -61,13 +61,13 @@ export const faceImgStyle = css`
 `;
 
 export const textwrapper = css`
-  ${theme.positionCenterX('absolute')};
+  ${theme.positionCenterX("absolute")};
   top: 85px;
 `;
 
 export const textStyle = css`
   color: #888888;
-  ${theme.fontStyle('Pretendard-Regular', 'normal', '400', '14px', '100%')};
+  ${theme.fontStyle("Pretendard-Regular", "normal", "400", "14px", "100%")};
   text-align: center;
   letter-spacing: -0.25px;
 `;
@@ -75,18 +75,18 @@ export const textStyle = css`
 export const distanceStyle = css`
   margin: 10px auto 18px;
   color: #333333;
-  ${theme.fontStyle('Pretendard-Regular', 'normal', '700', '34px', 'normal')};
+  ${theme.fontStyle("Pretendard-Regular", "normal", "700", "34px", "normal")};
   text-align: center;
 
   .kilometer {
     color: #666666;
-    ${theme.fontStyle('Pretendard-Regular', 'normal', '400', '26px', 'normal')};
+    ${theme.fontStyle("Pretendard-Regular", "normal", "400", "26px", "normal")};
   }
 `;
 
 export const caloryStyle = css`
   color: #888888;
-  ${theme.fontStyle('Pretendard-Regular', 'normal', '700', '18px', 'normal')};
+  ${theme.fontStyle("Pretendard-Regular", "normal", "700", "18px", "normal")};
   text-align: center;
 
   .kcal {
@@ -114,7 +114,7 @@ export const btnCommon = css`
 `;
 
 export const listWrapper = css`
-  ${theme.positionLeftBottom('absolute')};
+  ${theme.positionLeftBottom("absolute")};
   left: 50%;
   transform: translateX(-50%);
   bottom: 34px;
@@ -126,7 +126,7 @@ export const listWrapper = css`
 `;
 
 export const listStyle = css`
-  ${theme.flexBox('row', 'center', 'space-between')}
+  ${theme.flexBox("row", "center", "space-between")}
   width: 335px;
   height: 58px;
   background: #ffffff;
@@ -141,11 +141,11 @@ export const listStyle = css`
   }
 
   p {
-    ${theme.flexBox('row', 'center', 'initial')}
+    ${theme.flexBox("row", "center", "initial")}
     flex: 4;
 
     color: #333333;
-    ${theme.fontStyle('Pretendard-Regular', 'normal', '400', '15px', '100%')}
+    ${theme.fontStyle("Pretendard-Regular", "normal", "400", "15px", "100%")}
     letter-spacing: -0.25px;
   }
 

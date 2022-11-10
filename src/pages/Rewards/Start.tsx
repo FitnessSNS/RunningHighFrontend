@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from 'react';
-import * as styles from './css/startStyles';
-import { useDispatch } from 'react-redux';
-import { changeProcess } from 'src/reducers/rewards';
-import runAlone from 'src/assets/runAlone.svg';
-import runWith from 'src/assets/runWith.svg';
-import information from 'src/assets/info.svg';
+import React, { useState } from "react";
+import * as styles from "./css/startStyles";
+import { useDispatch } from "react-redux";
+import { changeProcess } from "src/reducers/rewards";
+import runAlone from "src/assets/runAlone.svg";
+import runWith from "src/assets/runWith.svg";
+import information from "src/assets/info.svg";
 
 export const Start = () => {
   const [checked, setChecked] = useState(false);
@@ -23,7 +23,7 @@ export const Start = () => {
             key={exercise.id}
             css={styles.boxStyle}
             onClick={() => {
-              dispatch(changeProcess('running'));
+              dispatch(changeProcess("running"));
             }}
           >
             <img
@@ -55,14 +55,14 @@ export const Start = () => {
 const EXERCISE_TYPES = [
   {
     id: 1,
-    title: '개인 운동',
-    subtitle: '혼자서 자유롭게 운동 시작하기',
+    title: "개인 운동",
+    subtitle: "혼자서 자유롭게 운동 시작하기",
     imgUrl: runAlone,
   },
   {
     id: 2,
-    title: '그룹 운동',
-    subtitle: '친구들과 함께 운동 시작하기',
+    title: "그룹 운동",
+    subtitle: "친구들과 함께 운동 시작하기",
     imgUrl: runWith,
   },
 ];
