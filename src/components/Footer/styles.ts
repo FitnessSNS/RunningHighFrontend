@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
-import { theme } from 'src/styles/theme';
+import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const footStyle = css`
   display: grid;
@@ -18,7 +18,7 @@ export const footStyle = css`
 `;
 
 export const runningFootStyle = css`
-  ${theme.flexBox('row', 'center', 'center')}
+  ${theme.flexBox("row", "center", "center")}
   /* position: absolute;
   left: 20px;
   bottom: 50px; */
