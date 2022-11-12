@@ -7,19 +7,21 @@ type CheckedProps = {
 };
 
 export const containerStyle = css`
+  position: relative;
   min-height: 630px;
   height: calc(100vh - 138px);
+  overflow: hidden;
 `;
 
 export const rewardStyle = css`
   width: 90%;
   height: 100%;
-  margin: 40px auto 0;
+  margin: 0 auto;
 `;
 
 export const titleStyle = css`
   width: 229px;
-  margin-bottom: 40px;
+  padding: 40px 0;
   color: #333;
   ${theme.fontStyle("Pretendard-Regular", "normal", "700", "1.75rem", "1.5")};
 `;
@@ -61,7 +63,7 @@ export const textStyle = css`
 export const checkBoxStyle = (props: CheckedProps) => css`
   ${theme.flexBox("row", "center", "space-between")};
   ${theme.positionCenterX("absolute")};
-  bottom: 52px;
+  bottom: 40px;
   width: 245px;
   height: 22px;
 

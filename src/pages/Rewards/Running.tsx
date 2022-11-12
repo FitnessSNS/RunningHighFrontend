@@ -8,6 +8,7 @@ import * as styles from "./css/runningStyles";
 import runAlone from "src/assets/runAlone.svg";
 import clock from "src/assets/icon/ico_clock.svg";
 import play from "src/assets/icon/btn_play.svg";
+import fire from "src/assets/icon/ico_fire.svg";
 
 export default function Running() {
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
@@ -44,7 +45,7 @@ export default function Running() {
   }, [position]);
 
   return (
-    <section style={{ height: 710 }}>
+    <section css={styles.containerStyle}>
       <div css={styles.runningTimeStyle}>
         <img src={clock} alt="clock" />
         <p>
@@ -74,6 +75,12 @@ export default function Running() {
             dispatch(changeProcess("photo"));
           }}
         />
+      </div>
+      <div css={styles.runningFootStyle}>
+        <img src={fire} alt="fire" css={{ marginRight: 17 }} />
+        <p style={{ fontSize: 14, fontWeight: 500 }}>
+          현재 <span>120</span>Kcal가 소모되었어요.
+        </p>
       </div>
     </section>
   );

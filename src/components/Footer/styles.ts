@@ -16,16 +16,3 @@ export const footStyle = css`
     }
   }
 `;
-
-export const runningFootStyle = css`
-  ${theme.flexBox("row", "center", "center")}
-  /* position: absolute;
-  left: 20px;
-  bottom: 50px; */
-
-  width: 335px;
-  height: 58px;
-
-  background: #f0f0f3;
-  border-radius: 10px;
-`;

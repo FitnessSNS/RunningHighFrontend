@@ -3,9 +3,10 @@ import { theme } from "../../../styles/theme";
 
 export const photoStyle = css`
   position: relative;
-  top: -58px;
-  height: 100%;
+  min-height: 630px;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.9);
+  overflow: hidden;
 
   #btnPhoto {
     ${theme.positionCenterX("absolute")};
