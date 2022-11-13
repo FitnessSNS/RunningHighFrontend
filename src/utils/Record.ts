@@ -3,27 +3,26 @@ export const Record = () => {
   let height = 0;
   let streaming = false;
 
-  let video = null;
-  let canvas = null;
-  let photo = null;
-  let btnPhoto = null;
+  let video: HTMLVideoElement;
+  let canvas: HTMLCanvasElement;
+  let photo: HTMLElement;
+  let btnPhoto: HTMLElement;
+  let afterPhoto: HTMLElement;
 
-  let afterPhoto = null;
+  const startRecord = () => {
+    video = document.getElementById("video") as HTMLVideoElement;
+    canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    photo = document.getElementById("photo") as HTMLElement;
+    btnPhoto = document.getElementById("btnPhoto") as HTMLElement;
 
-  function startRecord() {
-    video = document.getElementById("video");
-    canvas = document.getElementById("canvas");
-    photo = document.getElementById("photo");
-    btnPhoto = document.getElementById("btnPhoto");
-
-    afterPhoto = document.querySelector(".afterPhoto");
+    afterPhoto = document.querySelector(".afterPhoto") as HTMLElement;
     afterPhoto.style.display = "none";
 
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         video.srcObject = stream;
-        video.play();
+        video?.play();
       })
       .catch((err) => {
         alert("브라우저의 카메라를 허용해주세요");
@@ -39,10 +38,10 @@ export const Record = () => {
             height = width / (4 / 3);
           }
 
-          video.setAttribute("width", width);
-          video.setAttribute("height", height);
-          canvas.setAttribute("width", width);
-          canvas.setAttribute("height", height);
+          video.setAttribute("width", width.toString());
+          video.setAttribute("height", height.toString());
+          canvas.setAttribute("width", width.toString());
+          canvas.setAttribute("height", height.toString());
           streaming = true;
         }
       },
@@ -59,47 +58,53 @@ export const Record = () => {
     );
 
     clearphoto();
-  }
+  };
 
-  function clearphoto() {
+  const clearphoto = () => {
     const context = canvas.getContext("2d");
-    context.fillStyle = "transparent";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    if (context) {
+      context.fillStyle = "transparent";
+    }
+    context?.fillRect(0, 0, canvas.width, canvas.height);
 
     const data = canvas.toDataURL("image/png");
     photo.setAttribute("src", data);
-  }
+  };
 
-  function takepicture() {
+  const takepicture = () => {
     const context = canvas.getContext("2d");
     if (width && height) {
       canvas.width = width;
       canvas.height = height;
-      context.drawImage(video, 0, 0, width, height);
+      context?.drawImage(video, 0, 0, width, height);
 
       const data = canvas.toDataURL("image/png");
       photo.setAttribute("src", data);
-      const frame = document.querySelector(".frame");
-      frame.style.background = "transparent";
+      const frame = document.querySelector(".frame") as HTMLElement;
+      if (frame) {
+        frame.style.background = "transparent";
+      }
       btnPhoto.style.display = "none";
       afterPhoto.style.display = "flex";
     } else {
       clearphoto();
     }
-  }
+  };
 
   window.addEventListener("load", startRecord, false);
 
-  function endRecord() {
+  const endRecord = () => {
     let process = localStorage.getItem("persist:root");
-    process = JSON.parse(process);
+    if (process) {
+      let currentProcess = JSON.parse(process);
 
-    if (process.process !== "photo") {
-      video.src = "";
-      video.pause();
+      if (currentProcess.process !== "photo") {
+        video.src = "";
+        video.pause();
+      }
     }
-  }
+  };
 
   const btnGetReward = document.getElementById("btnGetReward");
-  btnGetReward.addEventListener("click", endRecord);
+  btnGetReward?.addEventListener("click", endRecord);
 };
