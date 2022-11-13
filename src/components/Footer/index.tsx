@@ -19,7 +19,6 @@ export const Footer = () => {
     <>
       {
         {
-          main: <FooterContainer />,
           start: <FooterContainer />,
           complete: <FooterContainer />,
         }[process]
@@ -28,7 +27,7 @@ export const Footer = () => {
   );
 };
 
-const FooterContainer = () => {
+export const FooterContainer = () => {
   return (
     <footer css={styles.footStyle}>
       {MENU_TABS.map((menu) => (

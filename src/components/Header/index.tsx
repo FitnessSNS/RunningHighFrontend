@@ -26,7 +26,6 @@ export const Header = () => {
     <>
       {
         {
-          main: <HeaderContainer />,
           start: <HeaderContainer />,
           running: <CloseBox onClick={() => handlePage()} />,
           complete: <CloseBox onClick={() => handlePage()} />,
@@ -36,7 +35,7 @@ export const Header = () => {
   );
 };
 
-const HeaderContainer = () => {
+export const HeaderContainer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
