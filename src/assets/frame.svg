@@ -1,6 +1,8 @@
-<svg width="351" height="475" viewBox="0 0 351 475" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M30 2H12C6.47715 2 2 6.47715 2 12V30" stroke="white" stroke-width="4" stroke-linecap="round"/>
-<path d="M321 473H339C344.523 473 349 468.523 349 463V445" stroke="white" stroke-width="4" stroke-linecap="round"/>
-<path d="M321 2H339C344.523 2 349 6.47715 349 12V30" stroke="white" stroke-width="4" stroke-linecap="round"/>
-<path d="M30 473H12C6.47715 473 2 468.523 2 463V445" stroke="white" stroke-width="4" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="1053" height="1425">
+<g transform="matrix(3 0 0 3 0 0)">
+    <path d="M30 2L12 2C 6.47715 2 2 6.47715 2 12L2 12L2 30" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none" />
+    <path d="M321 473L339 473C 344.523 473 349 468.523 349 463L349 463L349 445" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none" />
+    <path d="M321 2L339 2C 344.523 2 349 6.47715 349 12L349 12L349 30" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none" />
+    <path d="M30 473L12 473C 6.47715 473 2 468.523 2 463L2 463L2 445" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none" />
+</g>
 </svg>

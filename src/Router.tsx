@@ -20,8 +20,8 @@ export const Router: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Main />} />
         <Route element={<Layout />}>
-          <Route path="/" element={<Main />} />
           <Route path="/reward" element={<Rewards />} />
           <Route path="/mypage" element={<Mypage />} />
           {/* <Route path="/shop" element={<Shop />} /> */}

@@ -6,9 +6,12 @@ import { changeProcess } from "src/reducers/rewards";
 import { Record } from "src/utils/Record";
 import Button from "src/components/Button";
 import * as styles from "./css/photoStyles";
-import camera from "../../assets/camera.svg";
-import frame from "../../assets/frame.svg";
-import refresh from "../../assets/icon/ico_refresh.svg";
+import camera from "src/assets/camera.svg";
+import frameTopLeft from "src/assets/frame_top_left.svg";
+import frameTopRight from "src/assets/frame_top_right.svg";
+import frameBottomLeft from "src/assets/frame_bottom_left.svg";
+import frameBottomRight from "src/assets/frame_bottom_right.svg";
+import refresh from "src/assets/icon/ico_refresh.svg";
 
 export default function Photo() {
   const navigate = useNavigate();
@@ -22,7 +25,24 @@ export default function Photo() {
   return (
     <div css={styles.photoStyle} className="photobox">
       <h1 css={styles.titleStyle}>사진으로 인증하기</h1>
-      <div css={styles.thumbsStyle(frame)} className="frame"></div>
+      <div css={styles.thumbsStyle}>
+        <img src={frameTopLeft} alt="frame_top_left" className="frameTopLeft" />
+        <img
+          src={frameBottomLeft}
+          alt="frame_bottom_left"
+          className="frameBottomLeft"
+        />
+        <img
+          src={frameTopRight}
+          alt="frame_top_right"
+          className="frameTopRight"
+        />
+        <img
+          src={frameBottomRight}
+          alt="frame_bottom_right"
+          className="frameBottomRight"
+        />
+      </div>
       <div id="cam">
         <video id="video"></video>
       </div>
