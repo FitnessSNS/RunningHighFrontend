@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { theme } from "../../../styles/theme";
+import { theme } from "src/styles/theme";
 
 export const photoStyle = css`
   position: relative;
@@ -26,14 +26,15 @@ export const photoStyle = css`
   #video,
   #photo {
     position: absolute;
-    width: 375px;
+    width: 100%;
     border: none;
     outline: none;
   }
 
   #video {
     top: 123px;
-    height: 499px;
+    min-height: 499px;
+    height: 74%;
     object-fit: cover;
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -42,7 +43,8 @@ export const photoStyle = css`
 
   #photo {
     top: 123px;
-    height: 499px;
+    min-height: 499px;
+    height: 74%;
     object-fit: cover;
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -62,20 +64,37 @@ export const titleStyle = css`
   letter-spacing: -0.25px;
 `;
 
-export const thumbsStyle = (frame: string) => css`
+export const thumbsStyle = css`
   position: relative;
-  height: 499px;
-  background: transparent;
+  width: 100%;
+  min-height: 499px;
+  height: 74%;
   z-index: 1;
   border: none;
 
-  :after {
-    content: "";
+  .frameTopLeft {
+    display: block;
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: url(${frame}) no-repeat center center/ 93%;
-    z-index: 2;
+    left: 16px;
+    top: 16px;
+  }
+  .frameBottomLeft {
+    display: block;
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+  }
+  .frameTopRight {
+    display: block;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+  }
+  .frameBottomRight {
+    display: block;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
   }
 `;
 

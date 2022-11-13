@@ -80,10 +80,7 @@ export const Record = () => {
 
       const data = canvas.toDataURL("image/png");
       photo.setAttribute("src", data);
-      const frame = document.querySelector(".frame") as HTMLElement;
-      if (frame) {
-        frame.style.background = "transparent";
-      }
+
       btnPhoto.style.display = "none";
       afterPhoto.style.display = "flex";
     } else {
@@ -94,15 +91,9 @@ export const Record = () => {
   window.addEventListener("load", startRecord, false);
 
   const endRecord = () => {
-    let process = localStorage.getItem("persist:root");
-    if (process) {
-      let currentProcess = JSON.parse(process);
-
-      if (currentProcess.process !== "photo") {
-        video.src = "";
-        video.pause();
-      }
-    }
+    video.src = "";
+    video.pause();
+    window.removeEventListener("load", startRecord);
   };
 
   const btnGetReward = document.getElementById("btnGetReward");
