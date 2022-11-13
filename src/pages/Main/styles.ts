@@ -1,27 +1,28 @@
 import { css } from "@emotion/react";
-import start from "../../assets/start.svg";
-import dashEllipse from "../../assets/dashEllipse.svg";
 import { theme } from "src/styles/theme";
+import start from "src/assets/start.svg";
+import dashEllipse from "src/assets/dashEllipse.svg";
 
 export const mainWrapper = css`
   position: relative;
-  height: 630px;
+  min-height: 630px;
+  height: calc(100vh - 138px);
   background-color: ${theme.color.gray[50]};
 `;
 
 export const mainStyle = css`
-  position: absolute;
+  ${theme.positionCenterX("absolute")};
   top: 14px;
-  left: 20px;
   width: 335px;
-  height: 438px;
+  min-height: 438px;
+  height: 69.5%;
   background: #ffffff;
   border-radius: 10px;
 `;
 
 export const graphStyle = css`
   ${theme.positionCenterX("absolute")};
-  top: 40px;
+  top: 9.13%;
   width: 263px;
   height: 263px;
 
@@ -105,7 +106,6 @@ export const btnCommon = css`
   border-radius: 10px;
   color: #fff;
   border: none;
-
   cursor: pointer;
 
   &.btnStart {
@@ -113,22 +113,25 @@ export const btnCommon = css`
   }
 `;
 
+export const listWrapper = css`
+  ${theme.positionLeftBottom("absolute")};
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 34px;
+  width: 335px;
+
+  li ~ li {
+    margin-top: 4%;
+  }
+`;
+
 export const listStyle = css`
   ${theme.flexBox("row", "center", "space-between")}
-  position: absolute;
-  left: 20px;
   width: 335px;
   height: 58px;
   background: #ffffff;
   border-radius: 10px;
   cursor: pointer;
-
-  :first-of-type {
-    bottom: 104px;
-  }
-  :last-of-type {
-    bottom: 34px;
-  }
 
   .chart {
     display: block;
@@ -137,7 +140,7 @@ export const listStyle = css`
     flex: 1;
   }
 
-  a {
+  p {
     ${theme.flexBox("row", "center", "initial")}
     flex: 4;
 

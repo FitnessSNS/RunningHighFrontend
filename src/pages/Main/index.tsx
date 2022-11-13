@@ -4,10 +4,12 @@ import * as styles from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProcess, RewardState } from "src/reducers/rewards";
-import face from "../../assets/face.svg";
-import chart from "../../assets/chart.svg";
-import chartCup from "../../assets/chartCup.svg";
-import btnArrow from "../../assets/btn_arrow.svg";
+import face from "src/assets/face.svg";
+import chart from "src/assets/chart.svg";
+import chartCup from "src/assets/chartCup.svg";
+import btnArrow from "src/assets/btn_arrow.svg";
+import { HeaderContainer } from "src/components/Header";
+import { FooterContainer } from "src/components/Footer";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -25,7 +27,8 @@ export const Main = () => {
   console.log(process);
 
   return (
-    <div>
+    <>
+      <HeaderContainer />
       <main css={styles.mainWrapper}>
         <div css={styles.mainStyle}>
           <div css={styles.graphStyle}>
@@ -55,22 +58,20 @@ export const Main = () => {
             </span>
           </button>
         </div>
-        <div>
-          <ul>
-            <li css={styles.listStyle}>
-              <img src={chart} className="chart" />
-              <a>나의 운동 기록</a>
-              <img src={btnArrow} className="btnArrow" />
-            </li>
-            <li css={styles.listStyle}>
-              <img src={chartCup} className="chart" />
-              <a>진행 중인 챌린지</a>
-              <img src={btnArrow} className="btnArrow" />
-              <img />
-            </li>
-          </ul>
-        </div>
+        <ul css={styles.listWrapper}>
+          <li css={styles.listStyle}>
+            <img src={chart} className="chart" alt="chart" />
+            <p>나의 운동 기록</p>
+            <img src={btnArrow} className="btnArrow" alt="btn" />
+          </li>
+          <li css={styles.listStyle}>
+            <img src={chartCup} className="chart" alt="challenge" />
+            <p>진행 중인 챌린지</p>
+            <img src={btnArrow} className="btnArrow" alt="btn" />
+          </li>
+        </ul>
       </main>
-    </div>
+      <FooterContainer />
+    </>
   );
 };

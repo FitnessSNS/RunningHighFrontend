@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 import * as styles from "./styles";
 import { useSelector } from "react-redux";
 import { RewardState } from "src/reducers/rewards";
-import home from "../../assets/home.svg";
-import store from "../../assets/store.svg";
-import runStart from "../../assets/runStart.svg";
-import challenge from "../../assets/challenge.svg";
-import my from "../../assets/my.svg";
-import fire from "../../assets/icon/ico_fire.svg";
+import home from "src/assets/home.svg";
+import store from "src/assets/store.svg";
+import runStart from "src/assets/runStart.svg";
+import challenge from "src/assets/challenge.svg";
+import my from "src/assets/my.svg";
 
 export const Footer = () => {
   const process = useSelector(
@@ -17,39 +16,28 @@ export const Footer = () => {
   );
 
   return (
-    <footer css={styles.footStyle}>
-      <FooterContainer />
+    <>
       {
         {
-          main: <FooterContainer />,
           start: <FooterContainer />,
-          running: (
-            <div css={styles.runningFootStyle}>
-              <img src={fire} alt="fire" css={{ marginRight: 17 }} />
-              <p style={{ fontSize: 14, fontWeight: 500 }}>
-                현재 <span>120</span>Kcal가 소모되었어요.
-              </p>
-            </div>
-          ),
-          photo: <></>,
           complete: <FooterContainer />,
         }[process]
       }
-    </footer>
+    </>
   );
 };
 
-const FooterContainer = () => {
+export const FooterContainer = () => {
   return (
-    <>
+    <footer css={styles.footStyle}>
       {MENU_TABS.map((menu) => (
         <div key={menu.id} className="start">
           <Link to={menu.url}>
-            <img src={`${menu.imgUrl}`} />
+            <img src={`${menu.imgUrl}`} alt="menu" />
           </Link>
         </div>
       ))}
-    </>
+    </footer>
   );
 };
 
