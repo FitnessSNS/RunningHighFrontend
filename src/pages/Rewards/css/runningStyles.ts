@@ -20,7 +20,7 @@ export const runningTimeStyle = css`
     padding-left: 6px;
     width: calc(100% - 14px);
     color: #888888;
-    ${theme.fontStyle("Pretendard-Regular", "normal", "400", "15px", "normal")};
+    ${theme.fontStyle("Pretendard-Regular", "normal", "400", "15px")};
     letter-spacing: -0.25px;
   }
 
@@ -100,12 +100,10 @@ export const btnRoundStyle = (status: string) => css`
 
 export const runningFootStyle = css`
   ${theme.flexBox("row", "center", "center")};
-  ${theme.positionLeftBottom("absolute")};
-  left: 50%;
-  transform: translateX(-50%);
+  ${theme.positionCenterX("absolute")};
+  bottom: 40px;
 
   width: 90%;
-  min-width: 335px;
   height: 58px;
   background: #f0f0f3;
   border-radius: 10px;

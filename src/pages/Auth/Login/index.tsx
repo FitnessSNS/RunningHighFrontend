@@ -77,7 +77,7 @@ export const Login = () => {
         setModalTitle(login?.message);
       } else if (login?.isSuccess) {
         setAction(false);
-        navigate("/main");
+        navigate("/");
       }
     }
   }, [action, login, modal, navigate]);

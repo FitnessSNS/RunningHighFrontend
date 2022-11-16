@@ -40,9 +40,9 @@ export default function Running() {
     }
   }, []);
 
-  useEffect(() => {
-    runStart(position);
-  }, [position]);
+  // useEffect(() => {
+  //   runStart(position);
+  // }, [position]);
 
   return (
     <section css={styles.containerStyle}>
