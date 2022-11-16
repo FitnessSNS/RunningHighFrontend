@@ -1,5 +1,12 @@
 import { css } from "@emotion/react";
-import { theme } from "../../../styles/theme";
+import { theme } from "src/styles/theme";
+
+export const containerStyle = css`
+  position: relative;
+  min-height: 630px;
+  height: calc(100vh - 138px);
+  overflow: hidden;
+`;
 
 export const runningTimeStyle = css`
   display: flex;
@@ -48,20 +55,6 @@ export const runningGraphStyle = css`
     rotate: 233deg;
     z-index: -1;
   }
-
-  /* :before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 14px;
-    height: 14px;
-
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0px 0px 10px #269e62;
-    z-index: 1;
-  } */
 `;
 
 export const runningGraphInnerStyle = css`
@@ -103,4 +96,17 @@ export const btnRoundStyle = (status: string) => css`
   height: 70px;
   margin: 0 auto;
   cursor: pointer;
+`;
+
+export const runningFootStyle = css`
+  ${theme.flexBox("row", "center", "center")};
+  ${theme.positionLeftBottom("absolute")};
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 90%;
+  min-width: 335px;
+  height: 58px;
+  background: #f0f0f3;
+  border-radius: 10px;
 `;

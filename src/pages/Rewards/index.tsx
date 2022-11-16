@@ -31,7 +31,6 @@ export const Rewards = () => {
     <>
       {
         {
-          main: <Main />,
           start: <Start />,
           running: <Running />,
           photo: <Photo />,

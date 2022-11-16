@@ -7,25 +7,28 @@ type CheckedProps = {
 };
 
 export const containerStyle = css`
-  height: 630px;
+  position: relative;
+  min-height: 630px;
+  height: calc(100vh - 138px);
+  overflow: hidden;
 `;
 
 export const rewardStyle = css`
+  width: 90%;
   height: 100%;
-  padding: 40px 20px;
+  margin: 0 auto;
 `;
 
 export const titleStyle = css`
   width: 229px;
-  height: 66px;
-  margin-bottom: 40px;
+  padding: 40px 0;
   color: #333;
-  ${theme.fontStyle("Pretendard-Regular", "normal", "700", "28px", "1.5")};
+  ${theme.fontStyle("Pretendard-Regular", "normal", "700", "1.75rem", "1.5")};
 `;
 
 export const boxStyle = css`
   ${theme.flexBox("row", "center", "space-between")};
-  width: 335px;
+
   height: 120px;
   padding: 34px 30px;
   margin-bottom: 14px;
@@ -42,7 +45,13 @@ export const textStyle = css`
   h2 {
     padding-bottom: 12px;
     color: #333333;
-    ${theme.fontStyle("Pretendard-Regular", "normal", "700", "18px", "normal")};
+    ${theme.fontStyle(
+      "Pretendard-Regular",
+      "normal",
+      "700",
+      "1.125rem",
+      "normal"
+    )};
     letter-spacing: -0.25px;
   }
   p {
@@ -53,19 +62,16 @@ export const textStyle = css`
 
 export const checkBoxStyle = (props: CheckedProps) => css`
   ${theme.flexBox("row", "center", "space-between")};
-  position: relative;
+  ${theme.positionCenterX("absolute")};
   bottom: 40px;
   width: 245px;
   height: 22px;
-  margin: 0 auto;
 
   label {
     width: 22px;
     height: 22px;
-
     border: ${props.checked ? "none" : "1px solid #ddd"};
     border-radius: 4px;
-
     background: ${props.checked
       ? `url(${active}) no-repeat 100%/contain`
       : "#ffff"};

@@ -9,7 +9,6 @@ export default function Complete() {
   return (
     <section css={styles.containerStyle(pollen)}>
       <div>
-        <img />
         <h1>
           운동을 완료하고
           <br />
