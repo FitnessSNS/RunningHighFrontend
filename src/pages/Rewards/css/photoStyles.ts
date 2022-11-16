@@ -33,8 +33,7 @@ export const photoStyle = css`
 
   #video {
     top: 123px;
-    min-height: 499px;
-    height: 74%;
+    height: 60%;
     object-fit: cover;
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -43,8 +42,7 @@ export const photoStyle = css`
 
   #photo {
     top: 123px;
-    min-height: 499px;
-    height: 74%;
+    height: 60%;
     object-fit: cover;
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -67,8 +65,7 @@ export const titleStyle = css`
 export const thumbsStyle = css`
   position: relative;
   width: 100%;
-  min-height: 499px;
-  height: 74%;
+  height: 60%;
   z-index: 1;
   border: none;
 

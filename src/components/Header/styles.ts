@@ -1,28 +1,20 @@
 import { css } from "@emotion/react";
-import { theme } from "../../styles/theme";
-import menu from "../../assets/menu.svg";
-import close from "../../assets/icon/ico_close.svg";
+import { theme } from "src/styles/theme";
+import menu from "src/assets/menu.svg";
+import close from "src/assets/icon/ico_close.svg";
 
 export const navStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 21px;
-  /* width: 100%; */
   height: 58px;
-  outline: 2px solid red;
 `;
 
 export const pointStyle = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 10px 14px;
-
-  /* width: 81px; */
+  ${theme.flexBox("row", "flex-start", "space-between")};
   height: 35px;
-
+  padding: 10px 14px;
   border: 1px solid #dddddd;
   border-radius: 30px;
 

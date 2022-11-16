@@ -10,6 +10,14 @@ type photoType = {
   exerciseId: number;
 };
 
+export const findUser = async () => {
+  try {
+    // const response = await axios.get('/rewards/users");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const runStart = async (position: positionType) => {
   try {
     const respone = await axios.post("/reward/running/start", position, {
@@ -22,12 +30,13 @@ export const runStart = async (position: positionType) => {
     });
 
     const accessToken = await respone.data;
-
+    console.log(accessToken);
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${accessToken.token}`;
 
     document.cookie = `rst=${accessToken.token}`;
+    console.log(document.cookie);
   } catch (err) {
     console.error(err);
   }

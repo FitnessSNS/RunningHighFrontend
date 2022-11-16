@@ -72,7 +72,7 @@ const CloseBox = (onClick?: clickFuncType) => {
 
   return (
     <nav css={styles.navStyle}>
-      <div css={styles.closeBtnStyle} onClick={() => navigate(-1)} />;
+      <div css={styles.closeBtnStyle} onClick={() => navigate(-1)} />
     </nav>
   );
 };
