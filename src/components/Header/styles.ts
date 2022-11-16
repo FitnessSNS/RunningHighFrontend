@@ -1,6 +1,7 @@
-import { css } from '@emotion/react';
-import menu from '../../assets/menu.svg';
-import close from '../../assets/icon/ico_close.svg';
+import { css } from "@emotion/react";
+import { theme } from "../../styles/theme";
+import menu from "../../assets/menu.svg";
+import close from "../../assets/icon/ico_close.svg";
 
 export const navStyle = css`
   display: flex;
@@ -28,7 +29,7 @@ export const pointStyle = css`
   box-sizing: border-box;
 
   .myPoint {
-    ${theme.fontStyle('Pretendard-Regular', 'normal', '500', '13px', '17px')};
+    ${theme.fontStyle("Pretendard-Regular", "normal", "500", "13px", "17px")};
     text-align: right;
   }
 `;
