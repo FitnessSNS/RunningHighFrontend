@@ -61,7 +61,7 @@ export const middleContainer = css`
 `;
 
 export const exerciseBlock = css`
-  width: 334px;
+  width: 100%;
   height: 94px;
   border-radius: 10px;
   display: flex;

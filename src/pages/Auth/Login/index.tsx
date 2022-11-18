@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 
 import { loginValidation } from "src/libs/validations/loginValidation";
-import { localLogin } from "src/actions/user";
+import { localLogin, socialLogin } from "src/actions/user";
 import { AppDispatch, RootState } from "src/app/store";
 
 import Title from "src/components/Title";
@@ -33,9 +33,12 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { login } = useSelector((state: RootState) => state.user);
+  const { login, loginDone, socialCode, socialCodeDone } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const [action, setAction] = useState<boolean>(false);
+  const [socialAction, setSocialAction] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>("");
 
@@ -62,7 +65,8 @@ export const Login = () => {
     reset();
   };
   const handleSocialClick = () => {
-    //api연결
+    dispatch(socialLogin());
+    setSocialAction(true);
   };
 
   const handleModal = useCallback(() => {
@@ -71,7 +75,7 @@ export const Login = () => {
   }, [modal]);
 
   useEffect(() => {
-    if (action) {
+    if (action && loginDone) {
       if (!login?.isSuccess) {
         setModal(true);
         setModalTitle(login?.message);
@@ -80,7 +84,19 @@ export const Login = () => {
         navigate("/");
       }
     }
-  }, [action, login, modal, navigate]);
+  }, [action, login, loginDone, navigate]);
+
+  useEffect(() => {
+    if (socialAction && socialCodeDone) {
+      if (!socialCode?.isSuccess) {
+        setModal(true);
+        setModalTitle(socialCode?.message);
+      } else if (socialCode?.isSuccess) {
+        setSocialAction(false);
+        window.location.href = socialCode?.result.authURI;
+      }
+    }
+  }, [socialAction, socialCode, socialCodeDone]);
 
   return (
     <section css={styles.container}>
