@@ -20,14 +20,14 @@ export const mainStyle = css`
   border-radius: 10px;
 `;
 
-export const graphStyle = css`
+export const graphStyle =(loginDone:boolean)=> css`
   ${theme.positionCenterX("absolute")};
   top: 9.13%;
   width: 263px;
   height: 263px;
 
   border-radius: 50%;
-  background: ${theme.gradient.main};
+  background: ${loginDone? `${theme.gradient.main};` : '#DDDDDD'};
 
   z-index: 0;
 
