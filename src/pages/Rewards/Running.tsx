@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeProcess } from "src/reducers/rewards";
-import { runStart } from "./api";
 import { distanceStyle } from "../Main/styles";
 import * as styles from "./css/runningStyles";
 import runAlone from "src/assets/runAlone.svg";
@@ -41,7 +40,7 @@ export default function Running() {
   }, []);
 
   // useEffect(() => {
-  //   runStart(position);
+
   // }, [position]);
 
   return (
