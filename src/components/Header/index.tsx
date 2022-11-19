@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import * as styles from "./styles";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/app/store";
 import { changeProcess, RewardState } from "src/reducers/rewards";
 import back from "src/assets/back.svg";
 import coin from "src/assets/coin.svg";
@@ -20,6 +21,7 @@ export const Header = () => {
     (state: { rewards: RewardState }) => state.rewards.process
   );
   const dispatch = useDispatch();
+
   const handlePage = () => dispatch(changeProcess("start"));
 
   return (
@@ -39,6 +41,8 @@ export const HeaderContainer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { loginDone } = useSelector((state: RootState) => state.user);
+
   return (
     <nav css={styles.navStyle}>
       <h1>
@@ -53,14 +57,16 @@ export const HeaderContainer = () => {
         )}
       </h1>
       <div css={{ display: "flex" }}>
-        <div css={styles.pointStyle}>
-          <img
-            src={coin}
-            css={{ heihgt: "15px", objectFit: "contain" }}
-            alt="포인트"
-          />
-          <p className="myPoint">1,200</p>
-        </div>
+        {loginDone && (
+          <div css={styles.pointStyle}>
+            <img
+              src={coin}
+              css={{ marginRight: 4, objectFit: "contain" }}
+              alt="포인트"
+            />
+            <p className="myPoint">0</p>
+          </div>
+        )}
         <div css={styles.menuStyle} />
       </div>
     </nav>

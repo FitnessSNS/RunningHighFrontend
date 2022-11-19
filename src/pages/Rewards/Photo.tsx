@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeProcess } from "src/reducers/rewards";
-import { Record } from "src/utils/Record";
+import { Record } from "src/pages/Rewards/utils/Record";
 import Button from "src/components/Button";
 import * as styles from "./css/photoStyles";
 import camera from "src/assets/camera.svg";
@@ -12,15 +12,46 @@ import frameTopRight from "src/assets/frame_top_right.svg";
 import frameBottomLeft from "src/assets/frame_bottom_left.svg";
 import frameBottomRight from "src/assets/frame_bottom_right.svg";
 import refresh from "src/assets/icon/ico_refresh.svg";
+import axios from "axios";
+import ModalAlert from "src/components/ModalAlert";
+import { RootState } from "src/app/store";
 
 export default function Photo() {
+  const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const check = useSelector((state: RootState) => state.rewards.check);
+
   useEffect(() => {
     Record();
-    //필요시 formdata로 사진을 보내주면 백엔드에서 저장한다
   }, []);
+
+  const uploadPhoto = async () => {
+    const photo = document.getElementById("photo");
+    const imgUrl = photo?.getAttribute("src");
+    try {
+      const response = await axios.post(
+        "/reward/running/proofImage",
+        { image: imgUrl, exercise_id: check.exercise_id },
+        {
+          headers: {
+            withCredentials: true,
+            contentType: "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      console.error(err);
+      <ModalAlert
+        isOpen={modal}
+        title="사진 인증이 정상적으로\n진행되지 않았어요!"
+        buttonTitle="확인"
+        onClick={() => setModal(!modal)}
+      />;
+    }
+  };
 
   return (
     <div css={styles.photoStyle} className="photobox">
@@ -48,7 +79,7 @@ export default function Photo() {
       </div>
       <canvas id="canvas"></canvas>
       <div className="output">
-        <img id="photo" alt="" />
+        <img id="photo" alt="upload" />
       </div>
       <Button style="white" size="large" id="btnPhoto">
         <img src={camera} alt="camera" id="icoPhoto" />
@@ -68,6 +99,7 @@ export default function Photo() {
           size="large"
           id="btnGetReward"
           onClick={() => {
+            // uploadPhoto();
             dispatch(changeProcess("complete"));
           }}
         >

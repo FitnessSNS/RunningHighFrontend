@@ -7,7 +7,6 @@ import {
   rewardRunningCheck,
   rewardRunningStop,
   rewardRunningEnd,
-  rewardRunningUploadPhoto,
 } from "../actions/rewards";
 
 export interface RewardState {
@@ -37,10 +36,6 @@ export interface RewardState {
   endLoading: boolean;
   endDone: boolean;
   endError: any;
-  photo: any;
-  photoLoading: boolean;
-  photoDone: boolean;
-  photoError: any;
 }
 
 const initialState: RewardState = {
@@ -70,10 +65,6 @@ const initialState: RewardState = {
   endLoading: false,
   endDone: false,
   endError: null,
-  photo: null,
-  photoLoading: false,
-  photoDone: false,
-  photoError: null,
 };
 
 const rewardSlice = createSlice({
@@ -177,21 +168,6 @@ const rewardSlice = createSlice({
         state.stopLoading = false;
         state.stopDone = false;
         state.stopError = action.payload;
-      })
-      .addCase(rewardRunningUploadPhoto.pending, (state, action) => {
-        state.photoLoading = true;
-        state.photoDone = false;
-      })
-      .addCase(rewardRunningUploadPhoto.fulfilled, (state, action) => {
-        state.photo = action.payload;
-        state.photoLoading = false;
-        state.photoDone = true;
-        state.photoError = null;
-      })
-      .addCase(rewardRunningUploadPhoto.rejected, (state, action) => {
-        state.photoLoading = false;
-        state.photoDone = false;
-        state.photoError = action.payload;
       });
   },
 });

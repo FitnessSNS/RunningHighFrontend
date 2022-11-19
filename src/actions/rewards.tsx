@@ -50,11 +50,3 @@ export const rewardRunningEnd = createAsyncThunk(
     return response.data;
   }
 );
-
-export const rewardRunningUploadPhoto = createAsyncThunk(
-  "REWARD_RUNNING_UPLOAD_PHOTO",
-  async (data: { image: File; exercise_id: number }): Promise<any> => {
-    const response = await instance.post("/rewards/running/proofimage", data);
-    return response.data;
-  }
-);
