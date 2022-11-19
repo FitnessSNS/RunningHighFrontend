@@ -3,8 +3,7 @@ import React, { useEffect } from "react";
 import * as styles from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "src/app/store";
-import { RewardState } from "src/reducers/rewards";
+import { AppDispatch, RootState } from "src/app/store";
 import { getRewardUser } from "src/actions/rewards";
 import face from "src/assets/face.svg";
 import chart from "src/assets/chart.svg";
@@ -12,27 +11,27 @@ import chartCup from "src/assets/chartCup.svg";
 import btnArrow from "src/assets/btn_arrow.svg";
 import { HeaderContainer } from "src/components/Header";
 import { FooterContainer } from "src/components/Footer";
+import axios from "axios";
 
-export const Main = () => { 
+export const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const rewardUser = useSelector(
-    (state: {user: RewardState["user"]})=> state.user
-  )
+  const { loginDone } = useSelector((state: RootState) => state.user);
+
   useEffect(() => {
-    if (!rewardUser) {
+    if (loginDone) {
       dispatch(getRewardUser());
     }
   }, []);
-  console.log(rewardUser);
+  console.log(loginDone);
 
   return (
     <>
       <HeaderContainer />
       <main css={styles.mainWrapper}>
         <div css={styles.mainStyle}>
-          <div css={styles.graphStyle(rewardUser.loginDone)}>
+          <div css={styles.graphStyle(loginDone)}>
             <div css={styles.innerWrapper}>
               <img src={face} alt="timer" css={styles.faceImgStyle} />
               <div css={styles.textwrapper}>
@@ -50,15 +49,15 @@ export const Main = () => {
             css={styles.btnCommon}
             className="btnStart"
             onClick={() => {
-              if(rewardUser.loginDone){
-                navigate('/reward');
-              }else{
+              if (loginDone) {
+                navigate("/reward");
+              } else {
                 navigate("/login");
               }
             }}
           >
-            <span css={{ paddingLeft: 48, fontWeight: 700, fontSize: 16 }}>
-              {rewardUser.loginDone ? '운동 시작하기' : '로그인 하러 가기'}
+            <span css={{ paddingLeft: 16, fontWeight: 700, fontSize: 16 }}>
+              {loginDone ? "운동 시작하기" : "로그인 하러 가기"}
             </span>
           </button>
         </div>
