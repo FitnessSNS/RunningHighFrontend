@@ -11,7 +11,6 @@ import chartCup from "src/assets/chartCup.svg";
 import btnArrow from "src/assets/btn_arrow.svg";
 import { HeaderContainer } from "src/components/Header";
 import { FooterContainer } from "src/components/Footer";
-import axios from "axios";
 
 export const Main = () => {
   const navigate = useNavigate();
