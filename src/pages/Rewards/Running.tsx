@@ -1,17 +1,30 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeProcess } from "src/reducers/rewards";
 import { distanceStyle } from "../Main/styles";
 import * as styles from "./css/runningStyles";
 import runAlone from "src/assets/runAlone.svg";
 import clock from "src/assets/icon/ico_clock.svg";
 import play from "src/assets/icon/btn_play.svg";
+import pause from "src/assets/icon/btn_pause.svg";
+import cam from "src/assets/icon/btn_cam.svg";
 import fire from "src/assets/icon/ico_fire.svg";
+import {
+  rewardRunningCheck,
+  rewardRunningEnd,
+  rewardRunningStart,
+  rewardRunningStop,
+} from "src/actions/rewards";
+import { AppDispatch, RootState } from "src/app/store";
 
 export default function Running() {
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const start = useSelector((state: RootState) => state.rewards.start);
+  const check = useSelector((state: RootState) => state.rewards.check);
+  const stop = useSelector((state: RootState) => state.rewards.stop);
+  const end = useSelector((state: RootState) => state.rewards.end);
 
   //user location
   const findUserLocation = (position: {
@@ -39,9 +52,29 @@ export default function Running() {
     }
   }, []);
 
-  // useEffect(() => {
+  /*   useEffect(() => {
+    //check 주기적으로 호출
+    let interval = setInterval(() => {
+      checkRunningStateAndFetch(rewardRunningCheck);
+    }, 30000);
+    // forceEnd=true 일 경우 강제 종료처리
+    if (check.forceEnd) {
+      clearInterval(interval);
+      checkRunningStateAndFetch(rewardRunningEnd);
+    }
+  }, [position]); */
 
-  // }, [position]);
+  //running 상태 체크, dispatch 함수
+  const checkRunningStateAndFetch = (
+    runningState: (arg0: { longitude: string; latitude: string }) => any
+  ) => {
+    dispatch(
+      runningState({
+        longitude: position.longitude.toString(),
+        latitude: position.latitude.toString(),
+      })
+    );
+  };
 
   return (
     <section css={styles.containerStyle}>
@@ -68,6 +101,33 @@ export default function Running() {
             </p>
           </div>
         </div>
+        {/*         {
+          {
+            start: (
+              <div
+                css={styles.btnRoundStyle(play)}
+                onClick={() => checkRunningStateAndFetch(rewardRunningStart)}
+              />
+            ),
+            running: {
+              stop: (
+                <div
+                  css={styles.btnRoundStyle(pause)}
+                  onClick={() => checkRunningStateAndFetch(rewardRunningStop)}
+                />
+              ),
+              end: (
+                <div
+                  css={styles.btnRoundStyle(cam)}
+                  onClick={() => {
+                    checkRunningStateAndFetch(rewardRunningEnd);
+                    dispatch(changeProcess("photo"));
+                  }}
+                />
+              ),
+            }[check.distance >= end.distance ? "end" : "stop"],
+          }[start.distance > 0 ? "running" : "start"]
+        } */}
         <div
           css={styles.btnRoundStyle(play)}
           onClick={() => {
