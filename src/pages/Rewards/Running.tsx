@@ -21,6 +21,7 @@ import { AppDispatch, RootState } from "src/app/store";
 export default function Running() {
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
   const dispatch = useDispatch<AppDispatch>();
+
   const start = useSelector((state: RootState) => state.rewards.start);
   const check = useSelector((state: RootState) => state.rewards.check);
   const stop = useSelector((state: RootState) => state.rewards.stop);

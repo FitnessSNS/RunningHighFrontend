@@ -36,10 +36,10 @@ export const Main = () => {
               <div css={styles.textwrapper}>
                 <p css={styles.textStyle}>오늘 달린 거리</p>
                 <p css={styles.distanceStyle}>
-                  4.00<span className="kilometer">km</span>
+                  -.--<span className="kilometer">km</span>
                 </p>
                 <p css={styles.caloryStyle}>
-                  120<span className="kcal">Kcal</span>
+                  0<span className="kcal">Kcal</span>
                 </p>
               </div>
             </div>

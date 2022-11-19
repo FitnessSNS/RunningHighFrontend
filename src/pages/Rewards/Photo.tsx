@@ -17,10 +17,11 @@ import ModalAlert from "src/components/ModalAlert";
 import { RootState } from "src/app/store";
 
 export default function Photo() {
-  const check = useSelector((state: RootState) => state.rewards.check);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const check = useSelector((state: RootState) => state.rewards.check);
 
   useEffect(() => {
     Record();
