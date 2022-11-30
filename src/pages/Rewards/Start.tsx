@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import * as styles from "./css/startStyles";
 import { useDispatch } from "react-redux";
-import { changeProcess } from "src/reducers/rewards";
+import { changeProcess } from "src/reducers/process";
 import runAlone from "src/assets/runAlone.svg";
 import runWith from "src/assets/runWith.svg";
 import information from "src/assets/info.svg";
