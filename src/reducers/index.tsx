@@ -12,7 +12,7 @@ export const persistConfig = {
 };
 
 export const rootReducer = {
-  process: persistReducer(persistConfig, processSlice),
+  page: persistReducer(persistConfig, processSlice),
   rewards: rewardSlice,
   user: userSlice,
   token: tokenSlice,

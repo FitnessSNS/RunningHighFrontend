@@ -9,7 +9,7 @@ const initialState: ProcessState = {
 };
 
 const processSlice = createSlice({
-  name: "process",
+  name: "page",
   initialState,
   reducers: {
     changeProcess: (state, action) => {
