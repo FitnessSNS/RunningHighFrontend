@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeProcess } from "src/reducers/rewards";
+import { changeProcess } from "src/reducers/process";
 import { Record } from "src/pages/Rewards/utils/Record";
 import Button from "src/components/Button";
 import * as styles from "./css/photoStyles";
