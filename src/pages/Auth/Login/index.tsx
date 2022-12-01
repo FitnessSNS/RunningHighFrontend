@@ -3,11 +3,13 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "src/app/hooks";
 
 import { loginValidation } from "src/libs/validations/loginValidation";
 import { localLogin, socialLogin } from "src/actions/user";
-import { AppDispatch, RootState } from "src/app/store";
+import { setToken } from "src/reducers/token";
+import { RootState } from "src/app/store";
 
 import Title from "src/components/Title";
 import Input from "src/components/Input";
@@ -31,7 +33,7 @@ type changeData = {
 
 export const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const { login, loginDone, socialCode, socialCodeDone } = useSelector(
     (state: RootState) => state.user
@@ -60,7 +62,10 @@ export const Login = () => {
   const handleBtnClick = () => {
     dispatch(
       localLogin({ email: getValues("email"), password: getValues("password") })
-    );
+    ).then((res) => {
+      dispatch(setToken(res.payload.result.accessToken));
+    });
+
     setAction(true);
     reset();
   };

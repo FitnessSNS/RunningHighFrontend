@@ -20,14 +20,14 @@ export const mainStyle = css`
   border-radius: 10px;
 `;
 
-export const graphStyle = css`
+export const graphStyle = (isLoggedIn: boolean) => css`
   ${theme.positionCenterX("absolute")};
   top: 9.13%;
   width: 263px;
   height: 263px;
 
   border-radius: 50%;
-  background: ${theme.gradient.main};
+  background: ${isLoggedIn ? `${theme.gradient.main};` : "#DDDDDD"};
 
   z-index: 0;
 
@@ -109,7 +109,7 @@ export const btnCommon = css`
   cursor: pointer;
 
   &.btnStart {
-    background: #00bf68 url(${start}) no-repeat 91px center;
+    background: #00bf68 url(${start}) no-repeat 80px center;
   }
 `;
 

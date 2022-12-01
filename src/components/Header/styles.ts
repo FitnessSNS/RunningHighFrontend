@@ -28,6 +28,7 @@ export const pointStyle = css`
 
 export const menuStyle = css`
   width: 48px;
+  height: 35px;
   background: url(${menu}) no-repeat 100%;
   cursor: pointer;
 `;

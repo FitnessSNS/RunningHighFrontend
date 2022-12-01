@@ -1,46 +1,51 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as styles from "./styles";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { changeProcess, RewardState } from "src/reducers/rewards";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
+import instance from "src/libs/config";
+import { getRewardUser } from "src/actions/rewards";
+import { HeaderContainer } from "src/components/Header";
+import { FooterContainer } from "src/components/Footer";
 import face from "src/assets/face.svg";
 import chart from "src/assets/chart.svg";
 import chartCup from "src/assets/chartCup.svg";
 import btnArrow from "src/assets/btn_arrow.svg";
-import { HeaderContainer } from "src/components/Header";
-import { FooterContainer } from "src/components/Footer";
+import { useBeforeLeave } from "src/customHooks/useBeforeLeave";
+import { requestToken } from "src/actions/token";
 
 export const Main = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const process = useSelector(
-    (state: { rewards: RewardState }) => state.rewards.process
-  );
+  const dispatch = useAppDispatch();
+  const accessToken = useAppSelector((state) => state.token.accessToken);
+  const { enableEvent, disableEvent } = useBeforeLeave();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const process = localStorage.getItem("persist:root");
-    if (!process) {
-      dispatch(changeProcess("main"));
-    }
-  }, [process]);
-  console.log(process);
-
+    enableEvent();
+    disableEvent();
+  }, []);
+  useEffect(() => {
+    instance.defaults.headers["x-access-token"] = accessToken;
+    setIsLoggedIn(true);
+    dispatch(getRewardUser());
+  }, [accessToken]);
+  console.log(accessToken);
   return (
     <>
       <HeaderContainer />
       <main css={styles.mainWrapper}>
         <div css={styles.mainStyle}>
-          <div css={styles.graphStyle}>
+          <div css={styles.graphStyle(isLoggedIn)}>
             <div css={styles.innerWrapper}>
               <img src={face} alt="timer" css={styles.faceImgStyle} />
               <div css={styles.textwrapper}>
                 <p css={styles.textStyle}>오늘 달린 거리</p>
                 <p css={styles.distanceStyle}>
-                  4.00<span className="kilometer">km</span>
+                  -.--<span className="kilometer">km</span>
                 </p>
                 <p css={styles.caloryStyle}>
-                  120<span className="kcal">Kcal</span>
+                  0<span className="kcal">Kcal</span>
                 </p>
               </div>
             </div>
@@ -49,12 +54,15 @@ export const Main = () => {
             css={styles.btnCommon}
             className="btnStart"
             onClick={() => {
-              navigate("/reward");
-              dispatch(changeProcess("start"));
+              if (accessToken) {
+                navigate("/reward");
+              } else {
+                navigate("/login");
+              }
             }}
           >
-            <span css={{ paddingLeft: 28, fontWeight: 700, fontSize: 16 }}>
-              운동 시작하기
+            <span css={{ paddingLeft: 16, fontWeight: 700, fontSize: 16 }}>
+              {isLoggedIn ? "운동 시작하기" : "로그인 하러 가기"}
             </span>
           </button>
         </div>

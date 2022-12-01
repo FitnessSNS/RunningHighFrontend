@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PURGE } from "redux-persist";
+
 import {
   getRewardUser,
   getRewardType,
@@ -7,12 +7,10 @@ import {
   rewardRunningCheck,
   rewardRunningStop,
   rewardRunningEnd,
-  rewardRunningUploadPhoto,
 } from "../actions/rewards";
 
 export interface RewardState {
   isLoading: boolean;
-  process: string;
   user: any;
   userLoading: boolean;
   userDone: boolean;
@@ -37,15 +35,10 @@ export interface RewardState {
   endLoading: boolean;
   endDone: boolean;
   endError: any;
-  photo: any;
-  photoLoading: boolean;
-  photoDone: boolean;
-  photoError: any;
 }
 
 const initialState: RewardState = {
   isLoading: false,
-  process: "start",
   user: null,
   userLoading: false,
   userDone: false,
@@ -70,23 +63,14 @@ const initialState: RewardState = {
   endLoading: false,
   endDone: false,
   endError: null,
-  photo: null,
-  photoLoading: false,
-  photoDone: false,
-  photoError: null,
 };
 
 const rewardSlice = createSlice({
   name: "rewards",
   initialState,
-  reducers: {
-    changeProcess: (state, action) => {
-      state.process = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(PURGE, () => initialState)
       .addCase(getRewardUser.pending, (state, action) => {
         state.userLoading = true;
         state.userDone = false;
@@ -177,25 +161,8 @@ const rewardSlice = createSlice({
         state.stopLoading = false;
         state.stopDone = false;
         state.stopError = action.payload;
-      })
-      .addCase(rewardRunningUploadPhoto.pending, (state, action) => {
-        state.photoLoading = true;
-        state.photoDone = false;
-      })
-      .addCase(rewardRunningUploadPhoto.fulfilled, (state, action) => {
-        state.photo = action.payload;
-        state.photoLoading = false;
-        state.photoDone = true;
-        state.photoError = null;
-      })
-      .addCase(rewardRunningUploadPhoto.rejected, (state, action) => {
-        state.photoLoading = false;
-        state.photoDone = false;
-        state.photoError = action.payload;
       });
   },
 });
-
-export const { changeProcess } = rewardSlice.actions;
 
 export default rewardSlice.reducer;
