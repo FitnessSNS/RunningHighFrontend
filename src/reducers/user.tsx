@@ -5,7 +5,7 @@ import {
   checkNickname,
   localSignUp,
   localLogin,
-  socialCode,
+  socialLogin,
   socialSignUp,
 } from "../actions/user";
 
@@ -158,17 +158,17 @@ const userSlice = createSlice({
         state.loginDone = false;
         state.loginError = action.payload;
       })
-      .addCase(socialCode.pending, (state, action) => {
+      .addCase(socialLogin.pending, (state, action) => {
         state.socialCodeLoading = true;
         state.socialCodeDone = false;
       })
-      .addCase(socialCode.fulfilled, (state, action) => {
+      .addCase(socialLogin.fulfilled, (state, action) => {
         state.socialCode = action.payload;
         state.socialCodeLoading = false;
         state.socialCodeDone = true;
         state.socialCodeError = null;
       })
-      .addCase(socialCode.rejected, (state, action) => {
+      .addCase(socialLogin.rejected, (state, action) => {
         state.socialCodeLoading = false;
         state.socialCodeDone = false;
         state.socialCodeError = action.payload;
