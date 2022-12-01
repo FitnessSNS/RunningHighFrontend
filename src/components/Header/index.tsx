@@ -4,7 +4,7 @@ import * as styles from "./styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
-import { changeProcess, RewardState } from "src/reducers/rewards";
+import { changeProcess, ProcessState } from "src/reducers/process";
 import back from "src/assets/back.svg";
 import coin from "src/assets/coin.svg";
 import mainLogo from "src/assets/mainLogo.svg";
@@ -18,7 +18,7 @@ type clickFuncType = {
 
 export const Header = () => {
   const process = useSelector(
-    (state: { rewards: RewardState }) => state.rewards.process
+    (state: { process: ProcessState["process"] }) => state.process
   );
   const dispatch = useDispatch();
 

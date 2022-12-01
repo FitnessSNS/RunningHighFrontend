@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PURGE } from "redux-persist";
+
 import {
   getRewardUser,
   getRewardType,
@@ -11,7 +11,6 @@ import {
 
 export interface RewardState {
   isLoading: boolean;
-  process: string;
   user: any;
   userLoading: boolean;
   userDone: boolean;
@@ -40,7 +39,6 @@ export interface RewardState {
 
 const initialState: RewardState = {
   isLoading: false,
-  process: "start",
   user: null,
   userLoading: false,
   userDone: false,
@@ -70,14 +68,9 @@ const initialState: RewardState = {
 const rewardSlice = createSlice({
   name: "rewards",
   initialState,
-  reducers: {
-    changeProcess: (state, action) => {
-      state.process = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(PURGE, () => initialState)
       .addCase(getRewardUser.pending, (state, action) => {
         state.userLoading = true;
         state.userDone = false;
@@ -171,7 +164,5 @@ const rewardSlice = createSlice({
       });
   },
 });
-
-export const { changeProcess } = rewardSlice.actions;
 
 export default rewardSlice.reducer;

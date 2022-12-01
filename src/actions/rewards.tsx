@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const getRewardUser = createAsyncThunk(
   "GET_REWARD_USER",
   async (): Promise<any> => {
-    const response = await instance.get("/rewards/user");
+    const response = await instance.get("/rewards/users");
     return response.data;
   }
 );

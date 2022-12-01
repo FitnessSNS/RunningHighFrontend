@@ -9,10 +9,11 @@ import store from "src/assets/store.svg";
 import runStart from "src/assets/runStart.svg";
 import challenge from "src/assets/challenge.svg";
 import my from "src/assets/my.svg";
+import { ProcessState } from "src/reducers/process";
 
 export const Footer = () => {
   const process = useSelector(
-    (state: { rewards: RewardState }) => state.rewards.process
+    (state: { process: ProcessState["process"] }) => state.process
   );
 
   return (

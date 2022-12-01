@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeProcess } from "src/reducers/rewards";
+import { changeProcess } from "src/reducers/process";
 import { distanceStyle } from "../Main/styles";
 import * as styles from "./css/runningStyles";
 import runAlone from "src/assets/runAlone.svg";
