@@ -18,18 +18,26 @@ export const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector((state) => state.token.accessToken);
-  const { enableEvent, disableEvent } = useBeforeLeave();
+  const rewardUser = useAppSelector((state) => state.rewards.rewardUser);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { enableEvent, disableEvent } = useBeforeLeave();
 
   useEffect(() => {
-    enableEvent();
+    window.onbeforeunload = () => {
+      dispatch(requestToken());
+      enableEvent();
+    };
+
     disableEvent();
   }, []);
+
   useEffect(() => {
     instance.defaults.headers["x-access-token"] = accessToken;
     setIsLoggedIn(true);
     dispatch(getRewardUser());
   }, [accessToken]);
+
   console.log(accessToken);
   return (
     <>
