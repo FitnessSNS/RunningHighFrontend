@@ -11,6 +11,7 @@ import Title from "src/components/Title";
 import Input from "src/components/Input";
 import ValidationMessage from "src/components/ValidationMessage";
 import Button from "src/components/Button";
+import AuthTimer from "src/components/AuthTimer";
 import ModalAlert from "src/components/ModalAlert";
 
 import * as styles from "./styles";
@@ -117,7 +118,9 @@ export const SignupEmail = () => {
             <ValidationMessage message={errors.email?.message} />
             {hide ? (
               <>
-                <div css={styles.timerBlock}>5:00</div>
+                <div css={styles.timerBlock}>
+                  <AuthTimer />
+                </div>
                 <div css={styles.code}>
                   <Input
                     placeholder="인증코드"

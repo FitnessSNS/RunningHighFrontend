@@ -51,10 +51,12 @@ export const localLogin = createAsyncThunk(
   }
 );
 
-export const socialCode = createAsyncThunk(
-  "SOCIAL_CODE",
+export const socialLogin = createAsyncThunk(
+  "SOCIAL_LOGIN",
   async (): Promise<any> => {
-    const response = await instance.get("/auth/oauth/authorization");
+    const response = await instance.get(
+      "/auth/oauth/authorization?provider=kakao"
+    );
     return response.data;
   }
 );
