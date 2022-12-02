@@ -18,7 +18,7 @@ import {
 } from "src/actions/rewards";
 import { AppDispatch, RootState } from "src/app/store";
 
-export default function Running() {
+export const Running = () => {
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
   const dispatch = useDispatch<AppDispatch>();
 
@@ -144,4 +144,4 @@ export default function Running() {
       </div>
     </section>
   );
-}
+};

@@ -16,7 +16,7 @@ import axios from "axios";
 import ModalAlert from "src/components/ModalAlert";
 import { RootState } from "src/app/store";
 
-export default function Photo() {
+export const Photo = () => {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -108,4 +108,4 @@ export default function Photo() {
       </div>
     </div>
   );
-}
+};
