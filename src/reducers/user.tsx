@@ -11,6 +11,7 @@ import {
 
 export interface UserState {
   password: string;
+  init: boolean;
   email: any;
   emailLoading: boolean;
   emailDone: boolean;
@@ -43,6 +44,7 @@ export interface UserState {
 
 const initialState: UserState = {
   password: "",
+  init: false,
   email: null,
   emailLoading: false,
   emailDone: false,
@@ -79,6 +81,9 @@ const userSlice = createSlice({
   reducers: {
     getPassword: (state, action) => {
       state.password = action.payload;
+    },
+    initTimer: (state, action) => {
+      state.init = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -191,6 +196,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { getPassword } = userSlice.actions;
+export const { getPassword, initTimer } = userSlice.actions;
 
 export default userSlice.reducer;

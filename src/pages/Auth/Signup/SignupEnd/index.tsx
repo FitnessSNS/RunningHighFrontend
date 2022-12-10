@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import NavBar from "src/components/NavBar";
 import CloseButton from "src/components/CloseButton";
@@ -9,9 +10,10 @@ import Button from "src/components/Button";
 
 import * as styles from "./styles";
 import success from "src/assets/success.svg";
+import { RootState } from "src/app/store";
 
 export const SignupEnd = () => {
-  const nickname = "김러닝";
+  const { signUp } = useSelector((state: RootState) => state.user);
   return (
     <>
       <NavBar right={<CloseButton />} />
@@ -21,7 +23,7 @@ export const SignupEnd = () => {
             <img src={success} alt="아이콘" />
           </div>
           <Title textAlign="center" img={false}>
-            {nickname}님,
+            {signUp.result.nickname}님,
             <br />
             회원가입이 완료되었습니다!
           </Title>

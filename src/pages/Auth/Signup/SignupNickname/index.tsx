@@ -35,6 +35,7 @@ export const SignupNickname = () => {
   const [signupAction, setSignupAction] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
   const { email, nickname, password, signUp } = useSelector(
     (state: RootState) => state.user
@@ -83,20 +84,22 @@ export const SignupNickname = () => {
 
   useEffect(() => {
     if (nicknameAction) {
-      if (!nickname?.isSuccess) {
+      if (nickname?.code === 1000) {
         setModal(true);
         setModalTitle(nickname?.message);
+      } else {
+        setMessage(nickname?.message);
       }
     }
   }, [nicknameAction, nickname]);
 
   useEffect(() => {
     if (signupAction) {
-      if (!signUp?.isSuccess) {
+      if (signUp?.code === 1000) {
+        navigate("/signupend");
+      } else {
         setModal(true);
         setModalTitle(signUp?.message);
-      } else if (signUp?.isSuccess) {
-        navigate("/signupend");
       }
     }
   }, [signupAction, signUp, navigate]);
@@ -124,7 +127,9 @@ export const SignupNickname = () => {
             >
               인증요청
             </button>
-            <ValidationMessage message={errors.nickname?.message} />
+            <ValidationMessage
+              message={errors.nickname ? errors.nickname.message : message}
+            />
           </div>
         </section>
         <section css={styles.bottomContainer}>
