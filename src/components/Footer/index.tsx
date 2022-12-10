@@ -2,19 +2,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import * as styles from "./styles";
-import { useSelector } from "react-redux";
-import { RewardState } from "src/reducers/rewards";
+import { useAppSelector } from "src/app/hooks";
 import home from "src/assets/home.svg";
 import store from "src/assets/store.svg";
 import runStart from "src/assets/runStart.svg";
 import challenge from "src/assets/challenge.svg";
 import my from "src/assets/my.svg";
-import { ProcessState } from "src/reducers/process";
 
 export const Footer = () => {
-  const process = useSelector(
-    (state: { process: ProcessState["process"] }) => state.process
-  );
+  const process = useAppSelector((state) => state.page.process);
 
   return (
     <>

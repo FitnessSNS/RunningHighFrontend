@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
 import { useAppSelector } from "src/app/hooks";
+import instance from "src/libs/config";
+
 import { persistor } from "src/index";
 import { Start } from "./Start";
 import { Running } from "./Running";
@@ -10,7 +12,6 @@ import { Complete } from "./Complete";
 export const Rewards = () => {
   const process = useAppSelector((state) => state.page.process);
 
-  console.log(process);
   // 브라우저 창을 닫을 때 로컬스토리지 초기화
   const purge = async () => {
     await persistor.purge();
@@ -21,6 +22,14 @@ export const Rewards = () => {
       console.log("초기화");
       setTimeout(() => purge(), 200);
     };
+  }, []);
+
+  useEffect(() => {
+    //토큰 유무 체크
+    if (document.cookie) {
+      instance.defaults.headers["x-access-token"] =
+        document.cookie.substring(4);
+    }
   }, []);
 
   return (
