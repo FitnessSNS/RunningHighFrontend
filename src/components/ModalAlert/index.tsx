@@ -2,12 +2,14 @@
 import React from "react";
 import Modal from "react-modal";
 import Button from "../Button";
+import { ButtonSize } from "src/components/Button";
 
 import * as styles from "./styles";
 
 type Props = {
   isOpen: boolean;
   title: string;
+  size?: ButtonSize | undefined;
   description?: string;
   buttonCancelTitle?: string;
   buttonConfirmTitle?: string;
@@ -40,6 +42,7 @@ const customStyles: Modal.Styles = {
 const ModalAlert = ({
   isOpen,
   title,
+  size,
   description,
   buttonCancelTitle,
   onCancel,
@@ -52,12 +55,12 @@ const ModalAlert = ({
       <div css={styles.descriptionBlock}>{description}</div>
       <div css={styles.buttonBlock}>
         {buttonCancelTitle && (
-          <Button onClick={onCancel} style="primary" size="modal">
+          <Button onClick={onCancel} style="white" size={size}>
             {buttonCancelTitle}
           </Button>
         )}
         {buttonConfirmTitle && (
-          <Button onClick={onConfirm} style="primary" size="modal">
+          <Button onClick={onConfirm} style="primary" size={size}>
             {buttonConfirmTitle}
           </Button>
         )}

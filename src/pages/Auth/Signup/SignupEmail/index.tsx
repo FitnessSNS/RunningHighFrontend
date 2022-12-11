@@ -150,6 +150,7 @@ export const SignupEmail = () => {
       <ModalAlert
         isOpen={modal}
         title={modalTitle}
+        size="modal"
         buttonConfirmTitle="확인"
         onConfirm={handleModal}
       />

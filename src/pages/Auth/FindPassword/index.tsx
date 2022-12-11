@@ -94,6 +94,7 @@ export const FindPassword = () => {
       <ModalAlert
         isOpen={modal}
         title={"이메일로 임시 비밀번호가 \n발급되었어요."}
+        size="modal"
         description="마이페이지에서 비밀번호 변경이 가능해요."
         buttonConfirmTitle="로그인하기"
         onConfirm={() => {
