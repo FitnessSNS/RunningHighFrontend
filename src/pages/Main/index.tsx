@@ -49,7 +49,7 @@ export const Main = () => {
         sessionStorage.setItem("id", rewardUser?.result.userId);
         sessionStorage.setItem("ment", rewardUser?.result.ment);
       } else {
-        handleError();
+        handleError(rewardUser);
       }
     }
   }, [handleError, rewardUser?.isSucess, rewardUserDone]);
@@ -60,8 +60,6 @@ export const Main = () => {
       dispatch(requestToken());
     }, EXPIRED_TIME);
   }, []);
-
-  console.log(rewardUser);
 
   return (
     <>
