@@ -9,8 +9,10 @@ type Props = {
   isOpen: boolean;
   title: string;
   description?: string;
-  buttonTitle: string;
-  onClick?: () => void;
+  buttonCancelTitle?: string;
+  buttonConfirmTitle?: string;
+  onCancel?: () => void;
+  onConfirm?: () => void;
 };
 
 const customStyles: Modal.Styles = {
@@ -39,17 +41,26 @@ const ModalAlert = ({
   isOpen,
   title,
   description,
-  buttonTitle,
-  onClick,
+  buttonCancelTitle,
+  onCancel,
+  buttonConfirmTitle,
+  onConfirm,
 }: Props) => {
   return (
     <Modal isOpen={isOpen} style={customStyles} ariaHideApp={false}>
       <div css={styles.titleBlock}>{title}</div>
       <div css={styles.descriptionBlock}>{description}</div>
       <div css={styles.buttonBlock}>
-        <Button onClick={onClick} style="primary" size="modal">
-          {buttonTitle}
-        </Button>
+        {buttonCancelTitle && (
+          <Button onClick={onCancel} style="primary" size="modal">
+            {buttonCancelTitle}
+          </Button>
+        )}
+        {buttonConfirmTitle && (
+          <Button onClick={onConfirm} style="primary" size="modal">
+            {buttonConfirmTitle}
+          </Button>
+        )}
       </div>
     </Modal>
   );

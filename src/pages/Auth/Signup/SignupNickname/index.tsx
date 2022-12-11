@@ -141,8 +141,8 @@ export const SignupNickname = () => {
       <ModalAlert
         isOpen={modal}
         title={modalTitle}
-        buttonTitle="확인"
-        onClick={handleModal}
+        buttonConfirmTitle="확인"
+        onConfirm={handleModal}
       />
     </>
   );
