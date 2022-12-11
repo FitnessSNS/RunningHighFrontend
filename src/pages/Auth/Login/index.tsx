@@ -32,13 +32,8 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-<<<<<<< HEAD
   const { login, loginDone, socialCode, socialCodeDone } = useAppSelector(
     (state) => state.user
-=======
-  const { login, loginDone, socialCode } = useSelector(
-    (state: RootState) => state.user
->>>>>>> main
   );
 
   const [action, setAction] = useState<boolean>(false);
