@@ -47,6 +47,7 @@ export const Photo = () => {
       <ModalAlert
         isOpen={modal}
         title="사진 인증이 정상적으로\n진행되지 않았어요!"
+        size="modal"
         buttonConfirmTitle="확인"
         onConfirm={() => setModal(!modal)}
       />;
