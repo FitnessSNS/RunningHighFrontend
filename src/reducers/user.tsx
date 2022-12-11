@@ -11,6 +11,7 @@ import {
 
 export interface UserState {
   password: string;
+  init: boolean;
   email: any;
   emailLoading: boolean;
   emailDone: boolean;
@@ -35,14 +36,15 @@ export interface UserState {
   socialCodeLoading: boolean;
   socialCodeDone: boolean;
   socialCodeError: any;
-  socialSignUp: any;
-  socialSignUpLoading: boolean;
-  socialSignUpDone: boolean;
-  socialSignUpError: any;
+  socialInfo: any;
+  socialInfoLoading: boolean;
+  socialInfoDone: boolean;
+  socialInfoError: any;
 }
 
 const initialState: UserState = {
   password: "",
+  init: false,
   email: null,
   emailLoading: false,
   emailDone: false,
@@ -67,10 +69,10 @@ const initialState: UserState = {
   socialCodeLoading: false,
   socialCodeDone: false,
   socialCodeError: null,
-  socialSignUp: null,
-  socialSignUpLoading: false,
-  socialSignUpDone: false,
-  socialSignUpError: null,
+  socialInfo: null,
+  socialInfoLoading: false,
+  socialInfoDone: false,
+  socialInfoError: null,
 };
 
 const userSlice = createSlice({
@@ -79,6 +81,9 @@ const userSlice = createSlice({
   reducers: {
     getPassword: (state, action) => {
       state.password = action.payload;
+    },
+    initTimer: (state, action) => {
+      state.init = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -174,23 +179,23 @@ const userSlice = createSlice({
         state.socialCodeError = action.payload;
       })
       .addCase(socialSignUp.pending, (state, action) => {
-        state.socialSignUpLoading = true;
-        state.socialSignUpDone = false;
+        state.socialInfoLoading = true;
+        state.socialInfoDone = false;
       })
       .addCase(socialSignUp.fulfilled, (state, action) => {
-        state.socialSignUp = action.payload;
-        state.socialSignUpLoading = false;
-        state.socialSignUpDone = true;
-        state.socialSignUpError = null;
+        state.socialInfo = action.payload;
+        state.socialInfoLoading = false;
+        state.socialInfoDone = true;
+        state.socialInfoError = null;
       })
       .addCase(socialSignUp.rejected, (state, action) => {
-        state.socialSignUpLoading = false;
-        state.socialSignUpDone = false;
-        state.socialSignUpError = action.payload;
+        state.socialInfoLoading = false;
+        state.socialInfoDone = false;
+        state.socialInfoError = action.payload;
       });
   },
 });
 
-export const { getPassword } = userSlice.actions;
+export const { getPassword, initTimer } = userSlice.actions;
 
 export default userSlice.reducer;

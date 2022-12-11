@@ -5,7 +5,8 @@ export const titleBlock = css`
   font-size: 20px;
   font-weight: 700;
   line-height: 130%;
-  padding: 40px 0 16px 30px;
+  text-align: center;
+  padding: 40px 0 16px 0;
   white-space: pre-wrap;
 `;
 

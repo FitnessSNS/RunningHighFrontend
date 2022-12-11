@@ -32,8 +32,13 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+<<<<<<< HEAD
   const { login, loginDone, socialCode, socialCodeDone } = useAppSelector(
     (state) => state.user
+=======
+  const { login, loginDone, socialCode } = useSelector(
+    (state: RootState) => state.user
+>>>>>>> main
   );
 
   const [action, setAction] = useState<boolean>(false);
@@ -87,16 +92,16 @@ export const Login = () => {
   }, [action, login, loginDone, navigate]);
 
   useEffect(() => {
-    if (socialAction && socialCodeDone) {
-      if (!socialCode?.isSuccess) {
-        setModal(true);
-        setModalTitle(socialCode?.message);
-      } else if (socialCode?.isSuccess) {
+    if (socialAction) {
+      if (socialCode?.code === 1000) {
         setSocialAction(false);
         window.location.href = socialCode?.result.authURI;
+      } else {
+        setModal(true);
+        setModalTitle(socialCode?.message);
       }
     }
-  }, [socialAction, socialCode, socialCodeDone]);
+  }, [socialAction, socialCode]);
 
   return (
     <section css={styles.container}>
