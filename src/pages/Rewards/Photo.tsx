@@ -16,7 +16,7 @@ import axios from "axios";
 import ModalAlert from "src/components/ModalAlert";
 import { RootState } from "src/app/store";
 
-export default function Photo() {
+export const Photo = () => {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,8 +47,9 @@ export default function Photo() {
       <ModalAlert
         isOpen={modal}
         title="사진 인증이 정상적으로\n진행되지 않았어요!"
-        buttonTitle="확인"
-        onClick={() => setModal(!modal)}
+        size="modal"
+        buttonConfirmTitle="확인"
+        onConfirm={() => setModal(!modal)}
       />;
     }
   };
@@ -108,4 +109,4 @@ export default function Photo() {
       </div>
     </div>
   );
-}
+};

@@ -2,35 +2,65 @@
 import React, { useEffect, useState } from "react";
 import * as styles from "./styles";
 import { useNavigate } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import instance from "src/libs/config";
+
+import { requestToken } from "src/actions/token";
+import { changeProcess } from "src/reducers/process";
+import { useRewardUserError } from "./utils";
+
 import { getRewardUser } from "src/actions/rewards";
 import { HeaderContainer } from "src/components/Header";
 import { FooterContainer } from "src/components/Footer";
+
 import face from "src/assets/face.svg";
 import chart from "src/assets/chart.svg";
 import chartCup from "src/assets/chartCup.svg";
 import btnArrow from "src/assets/btn_arrow.svg";
-import { useBeforeLeave } from "src/customHooks/useBeforeLeave";
-import { requestToken } from "src/actions/token";
 
 export const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state) => state.token.accessToken);
-  const { enableEvent, disableEvent } = useBeforeLeave();
+  const { rewardUser, rewardUserDone } = useAppSelector(
+    (state) => state.rewards
+  );
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { handleError } = useRewardUserError(rewardUser);
+  const EXPIRED_TIME = 1000 * 60 * 60 * 1; //1hr
 
   useEffect(() => {
-    enableEvent();
-    disableEvent();
-  }, []);
+    //토큰 유무 체크 후 rewardUser API 호출
+    if (document.cookie) {
+      setIsLoggedIn(true);
+      instance.defaults.headers["x-access-token"] =
+        document.cookie.substring(4);
+      dispatch(getRewardUser());
+    } else {
+      setIsLoggedIn(false);
+      return;
+    }
+  }, [dispatch]);
+
   useEffect(() => {
-    instance.defaults.headers["x-access-token"] = accessToken;
-    setIsLoggedIn(true);
-    dispatch(getRewardUser());
-  }, [accessToken]);
-  console.log(accessToken);
+    if (rewardUserDone) {
+      if (rewardUser?.isSucess) {
+        sessionStorage.setItem("id", rewardUser?.result.userId);
+        sessionStorage.setItem("ment", rewardUser?.result.ment);
+      } else {
+        handleError(rewardUser);
+      }
+    }
+  }, [handleError, rewardUser?.isSucess, rewardUserDone]);
+
+  useEffect(() => {
+    //쿠키 만료 시간 직전 토큰 재발급 - 시간 추후 조정 필요
+    setTimeout(() => {
+      dispatch(requestToken());
+    }, EXPIRED_TIME);
+  }, []);
+
   return (
     <>
       <HeaderContainer />
@@ -42,10 +72,24 @@ export const Main = () => {
               <div css={styles.textwrapper}>
                 <p css={styles.textStyle}>오늘 달린 거리</p>
                 <p css={styles.distanceStyle}>
-                  -.--<span className="kilometer">km</span>
+                  {rewardUserDone
+                    ? rewardUser.isSuccess
+                      ? rewardUser.result.activity.distance_stack > 0
+                        ? rewardUser.result.activity.distance_stack
+                        : "-.--"
+                      : "-.--"
+                    : "-.--"}
+                  <span className="kilometer"> km</span>
                 </p>
                 <p css={styles.caloryStyle}>
-                  0<span className="kcal">Kcal</span>
+                  {rewardUserDone
+                    ? rewardUser.isSuccess
+                      ? rewardUser.result.activity.calorie_stack > 0
+                        ? rewardUser.result.activity.calorie_stack
+                        : 0
+                      : 0
+                    : 0}
+                  <span className="kcal">Kcal</span>
                 </p>
               </div>
             </div>
@@ -54,8 +98,9 @@ export const Main = () => {
             css={styles.btnCommon}
             className="btnStart"
             onClick={() => {
-              if (accessToken) {
+              if (isLoggedIn) {
                 navigate("/reward");
+                changeProcess("start");
               } else {
                 navigate("/login");
               }

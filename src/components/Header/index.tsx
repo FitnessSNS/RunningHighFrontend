@@ -2,9 +2,9 @@
 import React from "react";
 import * as styles from "./styles";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from "src/app/hooks";
 import { RootState } from "src/app/store";
-import { changeProcess, ProcessState } from "src/reducers/process";
+import { changeProcess } from "src/reducers/process";
 import back from "src/assets/back.svg";
 import coin from "src/assets/coin.svg";
 import mainLogo from "src/assets/mainLogo.svg";
@@ -17,10 +17,8 @@ type clickFuncType = {
 };
 
 export const Header = () => {
-  const process = useSelector(
-    (state: { process: ProcessState["process"] }) => state.process
-  );
-  const dispatch = useDispatch();
+  const process = useAppSelector((state) => state.page.process);
+  const dispatch = useAppDispatch();
 
   const handlePage = () => dispatch(changeProcess("start"));
 
@@ -41,7 +39,8 @@ export const HeaderContainer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { loginDone } = useSelector((state: RootState) => state.user);
+  const { loginDone } = useAppSelector((state: RootState) => state.user);
+  const rewardUser = useAppSelector((state) => state.rewards.rewardUser);
 
   return (
     <nav css={styles.navStyle}>
@@ -64,7 +63,9 @@ export const HeaderContainer = () => {
               css={{ marginRight: 4, objectFit: "contain" }}
               alt="포인트"
             />
-            <p className="myPoint">0</p>
+            <p className="myPoint">
+              {rewardUser && rewardUser.result ? rewardUser.result.point : 0}
+            </p>
           </div>
         )}
         <div css={styles.menuStyle} />

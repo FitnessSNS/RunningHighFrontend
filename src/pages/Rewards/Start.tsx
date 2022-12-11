@@ -1,17 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
 import * as styles from "./css/startStyles";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "src/app/hooks";
 import { changeProcess } from "src/reducers/process";
 import runAlone from "src/assets/runAlone.svg";
 import runWith from "src/assets/runWith.svg";
 import information from "src/assets/info.svg";
-import { AppDispatch } from "src/app/store";
 import { getRewardType } from "src/actions/rewards";
 
 export const Start = () => {
   const [checked, setChecked] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   return (
     <section css={styles.containerStyle}>
@@ -26,11 +25,11 @@ export const Start = () => {
             css={styles.boxStyle}
             onClick={() => {
               dispatch(changeProcess("running"));
-              // if (exercise.id === 1) {
-              //   dispatch(getRewardType("P"));
-              // } else {
-              //   dispatch(getRewardType("G"));
-              // }
+              if (exercise.id === 1) {
+                dispatch(getRewardType("P"));
+              } else {
+                dispatch(getRewardType("G"));
+              }
             }}
           >
             <img
