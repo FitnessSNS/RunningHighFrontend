@@ -18,16 +18,13 @@ export const useRewardStart = async (position: PositionProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const start = dispatch(
+    dispatch(
       rewardRunningStart({
         longitude: position.longitude.toString(),
         latitude: position.latitude.toString(),
       })
     );
-
-    setResult(start);
   }, []);
-  return result;
 };
 
 //check
