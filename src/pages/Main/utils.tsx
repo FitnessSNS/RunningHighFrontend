@@ -1,8 +1,11 @@
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "src/app/hooks";
 import { requestToken } from "src/actions/token";
-import { useCallback } from "react";
+import { localLogout } from "src/actions/user";
 
 export const useRewardUserError = (RewardUser: any) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleError = useCallback(
@@ -12,7 +15,7 @@ export const useRewardUserError = (RewardUser: any) => {
           if (document.cookie) {
             dispatch(requestToken());
           } else {
-            //로그아웃
+            navigate("/login");
           }
           break;
         case 1054:
@@ -21,6 +24,8 @@ export const useRewardUserError = (RewardUser: any) => {
         default:
           alert(RewardUser.message);
           //로그아웃
+          dispatch(localLogout(document.cookie.substring(4)));
+          document.cookie = "";
           break;
       }
     },
