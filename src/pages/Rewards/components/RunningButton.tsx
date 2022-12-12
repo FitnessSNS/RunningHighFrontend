@@ -10,12 +10,15 @@ import play from "src/assets/icon/btn_play.svg";
 import pause from "src/assets/icon/btn_pause.svg";
 import stop from "src/assets/icon/btn_stop.svg";
 import cam from "src/assets/icon/btn_cam.svg";
+import { changeProcess } from "src/reducers/process";
+import { useAppDispatch } from "src/app/hooks";
 
 export const RunningButton = (props: {
   position: PositionProps;
   rewardsInfo: RewardInfoProps;
   setModalClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const dispatch = useAppDispatch();
   const onClickCheck = useRewardCheck(props.position, false);
   const onClickStop = useRewardStop(props.position);
   const onClickEnd = useRewardEnd(props.position, false);
@@ -41,7 +44,12 @@ export const RunningButton = (props: {
           stop: (
             <div css={styles.btnRoundStyle(stop)} onClick={() => onClickEnd} />
           ),
-          cam: <div css={styles.btnRoundStyle(cam)} onClick={() => {}} />,
+          cam: (
+            <div
+              css={styles.btnRoundStyle(cam)}
+              onClick={() => dispatch(changeProcess("photo"))}
+            />
+          ),
         }[props.rewardsInfo.status]
       }
     </>
