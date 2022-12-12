@@ -147,7 +147,7 @@ export const Running = () => {
     if (percent === 100) {
       setRewardsInfo({ ...rewardsInfo, status: "stop" });
     }
-  });
+  }, [percent, rewardsInfo]);
 
   return (
     <section css={styles.containerStyle}>
