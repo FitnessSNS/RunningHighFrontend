@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { requestToken } from "src/actions/token";
 import { RewardInfoProps } from "../Running";
 import { useNavigate } from "react-router-dom";
+import { localLogout } from "src/actions/user";
 
 export type PositionProps = {
   longitude: number;
@@ -57,7 +58,7 @@ export const useRewardError = (
             //쿠키가 있으면 토큰 재발급
             dispatch(requestToken());
           } else {
-            //없으면 로그아웃
+            navigate("/login");
           }
           break;
         case 1054:
@@ -191,10 +192,14 @@ export const useRewardError = (
             })
           );
           //로그아웃
+          dispatch(localLogout(document.cookie.substring(4)));
+          document.cookie = "";
           break;
         default:
           alert(RewardState.message);
           //로그아웃
+          dispatch(localLogout(document.cookie.substring(4)));
+          document.cookie = "";
           break;
       }
     },

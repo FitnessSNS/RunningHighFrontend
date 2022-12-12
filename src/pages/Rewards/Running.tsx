@@ -9,6 +9,7 @@ import { distanceStyle } from "../Main/styles";
 import { useRewardStart, useRewardCheck } from "./utils/api";
 import { notFoundLocation, useRewardError } from "./utils/handleError";
 import { RunningButton } from "./components/RunningButton";
+import ModalAlert from "src/components/ModalAlert";
 
 import runAlone from "src/assets/runAlone.svg";
 import clock from "src/assets/icon/ico_clock.svg";
@@ -32,13 +33,13 @@ export const Running = () => {
     calorie: "0",
     status: "play",
   });
+  const [modalClicked, setModalClicked] = useState(false);
 
   const USER_ID = sessionStorage.getItem("id");
   const MENT = sessionStorage.getItem("ment");
 
-  const { start, startDone, check, stop, end } = useAppSelector(
-    (state: RootState) => state.rewards
-  );
+  const { start, startDone, check, checkDone, stop, stopDone, end, endDone } =
+    useAppSelector((state: RootState) => state.rewards);
 
   //사용자 위치 확인하기
   const findUserLocation = (position: {
@@ -63,8 +64,7 @@ export const Running = () => {
   }, []);
 
   //페이지 접속하자마자 start API 호출
-  const result = useRewardStart(position);
-  console.log(result);
+  useRewardStart(position);
   const { handleError } = useRewardError(
     start,
     position,
@@ -85,16 +85,69 @@ export const Running = () => {
           status: "pause",
         });
       } else {
-        handleError();
+        handleError(start);
       }
     }
-  }, [handleError, rewardsInfo, start?.isSuccess, startDone]);
+  }, [start, startDone]);
 
+  const handleCheck = useRewardCheck(position, false);
+  const handleRecheck = useRewardCheck(position, true);
+
+  let checkInterval: NodeJS.Timer | undefined;
+  // 10초에 한번씩 check api 호출
   useEffect(() => {
     if (rewardsInfo.status === "pause") {
-      // useRewardCheck(position, false);
+      checkInterval = setInterval(() => handleCheck, 10000);
     }
-  }, []);
+  }, [rewardsInfo.status]);
+
+  useEffect(() => {
+    if (checkDone) {
+      if (check?.isSuccess) {
+        setRewardsInfo({
+          ...rewardsInfo,
+          challenge_goal: check.result.challenge_goal,
+          time: check.result.time,
+          distance: check.result.distance,
+          calorie: check.result.calorie,
+          status: "pause",
+        });
+        setPercent(
+          Math.floor(rewardsInfo.distance / rewardsInfo.challenge_goal) * 100
+        );
+      } else {
+        handleError(check);
+      }
+    }
+  }, [check, checkDone, rewardsInfo]);
+
+  //일시정지 (stop) api 호출
+  useEffect(() => {
+    if (stopDone) {
+      clearInterval(checkInterval);
+      if (stop?.isSuccess) {
+        setRewardsInfo({
+          ...rewardsInfo,
+          challenge_goal: stop.result.challenge_goal,
+          time: stop.result.time,
+          distance: stop.result.distance,
+          calorie: stop.result.calorie,
+          status: "stop",
+        });
+        setPercent(
+          Math.floor(rewardsInfo.distance / rewardsInfo.challenge_goal) * 100
+        );
+      } else {
+        handleError(stop);
+      }
+    }
+  }, [stop, stopDone, rewardsInfo]);
+
+  useEffect(() => {
+    if (percent === 100) {
+      setRewardsInfo({ ...rewardsInfo, status: "stop" });
+    }
+  }, [percent, rewardsInfo]);
 
   return (
     <section css={styles.containerStyle}>
@@ -125,7 +178,11 @@ export const Running = () => {
             <div css={styles.endPointStyle} />
           </div>
         </div>
-        <RunningButton rewardsInfo={rewardsInfo} />
+        <RunningButton
+          position={position}
+          rewardsInfo={rewardsInfo}
+          setModalClicked={setModalClicked}
+        />
       </div>
       <div css={styles.runningFootStyle}>
         <img src={fire} alt="fire" css={{ marginRight: 17 }} />
@@ -133,6 +190,22 @@ export const Running = () => {
           현재 <span>{rewardsInfo.calorie}</span>Kcal가 소모되었어요.
         </p>
       </div>
+      <ModalAlert
+        isOpen={modalClicked}
+        title={"재시작하시겠습니까?"}
+        size="modal"
+        description="마이페이지에서 비밀번호 변경이 가능해요."
+        buttonCancelTitle="취소"
+        onCancel={() => {
+          setModalClicked(false);
+          checkInterval = setInterval(() => handleCheck, 10000);
+        }}
+        buttonConfirmTitle="재시작하기"
+        onConfirm={() => {
+          setModalClicked(false);
+          checkInterval = setInterval(() => handleRecheck, 10000);
+        }}
+      />
     </section>
   );
 };

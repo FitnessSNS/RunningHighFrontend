@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { stat } from "fs/promises";
 import {
   emailVerification,
   emailVerificationCode,
   checkNickname,
   localSignUp,
   localLogin,
+  localLogout,
   socialLogin,
   socialSignUp,
 } from "../actions/user";
@@ -32,6 +34,10 @@ export interface UserState {
   loginLoading: boolean;
   loginDone: boolean;
   loginError: any;
+  logout: any;
+  logoutLoading: boolean;
+  logoutDone: boolean;
+  logoutError: any;
   socialCode: any;
   socialCodeLoading: boolean;
   socialCodeDone: boolean;
@@ -65,6 +71,10 @@ const initialState: UserState = {
   loginLoading: false,
   loginDone: false,
   loginError: null,
+  logout: null,
+  logoutLoading: false,
+  logoutDone: false,
+  logoutError: null,
   socialCode: null,
   socialCodeLoading: false,
   socialCodeDone: false,
@@ -162,6 +172,21 @@ const userSlice = createSlice({
         state.loginLoading = false;
         state.loginDone = false;
         state.loginError = action.payload;
+      })
+      .addCase(localLogout.pending, (state, action) => {
+        state.logoutLoading = true;
+        state.logoutDone = false;
+      })
+      .addCase(localLogout.fulfilled, (state, action) => {
+        state.logout = action.payload;
+        state.logoutLoading = false;
+        state.logoutDone = false;
+        state.loginError = null;
+      })
+      .addCase(localLogout.rejected, (state, action) => {
+        state.logoutLoading = false;
+        state.logoutDone = false;
+        state.logoutError = action.payload;
       })
       .addCase(socialLogin.pending, (state, action) => {
         state.socialCodeLoading = true;
