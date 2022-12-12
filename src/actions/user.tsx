@@ -52,6 +52,18 @@ export const localLogin = createAsyncThunk(
   }
 );
 
+export const localLogout = createAsyncThunk(
+  "LOCAL_LOGOUT",
+  async (token: string): Promise<any> => {
+    const response = await instance.get("/auth/logout", {
+      headers: {
+        "x-access-token": token,
+      },
+    });
+    return response.data;
+  }
+);
+
 export const socialLogin = createAsyncThunk(
   "SOCIAL_LOGIN",
   async (): Promise<any> => {
