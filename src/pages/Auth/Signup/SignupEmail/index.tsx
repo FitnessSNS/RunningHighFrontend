@@ -11,11 +11,13 @@ import Title from "src/components/Title";
 import Input from "src/components/Input";
 import ValidationMessage from "src/components/ValidationMessage";
 import Button from "src/components/Button";
+import AuthTimer from "src/components/AuthTimer";
 import ModalAlert from "src/components/ModalAlert";
 
 import * as styles from "./styles";
 import { emailValidation } from "src/libs/validations/emailValidation";
 import { emailVerification, emailVerificationCode } from "src/actions/user";
+import { initTimer } from "src/reducers/user";
 import { AppDispatch, RootState } from "src/app/store";
 
 type formData = {
@@ -32,6 +34,7 @@ export const SignupEmail = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>("");
   const [hide, setHide] = useState<boolean>(false);
+  const [again, setAgain] = useState<boolean>(false);
 
   const {
     register,
@@ -42,7 +45,9 @@ export const SignupEmail = () => {
     resolver: yupResolver(emailValidation),
   });
 
-  const { email, emailCode } = useSelector((state: RootState) => state.user);
+  const { email, emailCode, init } = useSelector(
+    (state: RootState) => state.user
+  );
   const handleChange = ({ name, value }: any) => {
     setValue(name, value, { shouldValidate: true });
   };
@@ -55,6 +60,7 @@ export const SignupEmail = () => {
     setEmailAction(true);
   };
   const handleDoneClick = () => {
+    setAgain(false);
     dispatch(
       emailVerificationCode({
         email: email.result.userEmail,
@@ -75,9 +81,9 @@ export const SignupEmail = () => {
 
   useEffect(() => {
     if (emailAction) {
+      setModal(true);
+      setModalTitle(email?.message);
       if (!email?.isSuccess) {
-        setModal(true);
-        setModalTitle(email?.message);
         setHide(false);
       } else if (email?.isSuccess) {
         setHide(true);
@@ -87,15 +93,27 @@ export const SignupEmail = () => {
 
   useEffect(() => {
     if (codeAction) {
-      if (!emailCode?.isSuccess) {
-        setModal(true);
-        setModalTitle(emailCode?.message);
-      } else if (emailCode?.isSuccess) {
+      if (emailCode?.code === 1000) {
         setHide(false);
         navigate("/signuppwd");
+      } else {
+        setModal(true);
+        setModalTitle(emailCode?.message);
       }
     }
   }, [codeAction, emailCode, navigate]);
+
+  useEffect(() => {
+    if (init) {
+      setAgain(true);
+      setHide(false);
+      dispatch(
+        initTimer({
+          init: false,
+        })
+      );
+    }
+  }, [dispatch, init]);
 
   return (
     <>
@@ -117,7 +135,9 @@ export const SignupEmail = () => {
             <ValidationMessage message={errors.email?.message} />
             {hide ? (
               <>
-                <div css={styles.timerBlock}>5:00</div>
+                <div css={styles.timerBlock}>
+                  <AuthTimer />
+                </div>
                 <div css={styles.code}>
                   <Input
                     placeholder="인증코드"
@@ -129,7 +149,7 @@ export const SignupEmail = () => {
               </>
             ) : (
               <button css={styles.button} onClick={handleSubmitClick}>
-                인증요청
+                {again ? "재요청" : "인증요청"}
               </button>
             )}
           </div>
@@ -147,8 +167,9 @@ export const SignupEmail = () => {
       <ModalAlert
         isOpen={modal}
         title={modalTitle}
-        buttonTitle="확인"
-        onClick={handleModal}
+        size="modal"
+        buttonConfirmTitle="확인"
+        onConfirm={handleModal}
       />
     </>
   );

@@ -47,14 +47,29 @@ export const localLogin = createAsyncThunk(
   "LOCAL_LOGIN",
   async (data: { email: string; password: string }): Promise<any> => {
     const response = await instance.post("/auth/signIn/local", data);
+    document.cookie = `rwtS${response.data.result.accessToken}`;
     return response.data;
   }
 );
 
-export const socialCode = createAsyncThunk(
-  "SOCIAL_CODE",
+export const localLogout = createAsyncThunk(
+  "LOCAL_LOGOUT",
+  async (token: string): Promise<any> => {
+    const response = await instance.get("/auth/logout", {
+      headers: {
+        "x-access-token": token,
+      },
+    });
+    return response.data;
+  }
+);
+
+export const socialLogin = createAsyncThunk(
+  "SOCIAL_LOGIN",
   async (): Promise<any> => {
-    const response = await instance.get("/auth/oauth/authorization");
+    const response = await instance.get(
+      "/auth/oauth/authorization?provider=kakao"
+    );
     return response.data;
   }
 );

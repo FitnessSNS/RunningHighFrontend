@@ -1,33 +1,47 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { changeProcess } from "src/reducers/process";
-import { distanceStyle } from "../Main/styles";
+import { RootState } from "src/app/store";
+import { useAppSelector } from "src/app/hooks";
+
 import * as styles from "./css/runningStyles";
+import { distanceStyle } from "../Main/styles";
+
+import { useRewardStart, useRewardCheck } from "./utils/api";
+import { notFoundLocation, useRewardError } from "./utils/handleError";
+import { RunningButton } from "./components/RunningButton";
+import ModalAlert from "src/components/ModalAlert";
+
 import runAlone from "src/assets/runAlone.svg";
 import clock from "src/assets/icon/ico_clock.svg";
-import play from "src/assets/icon/btn_play.svg";
-import pause from "src/assets/icon/btn_pause.svg";
-import cam from "src/assets/icon/btn_cam.svg";
 import fire from "src/assets/icon/ico_fire.svg";
-import {
-  rewardRunningCheck,
-  rewardRunningEnd,
-  rewardRunningStart,
-  rewardRunningStop,
-} from "src/actions/rewards";
-import { AppDispatch, RootState } from "src/app/store";
 
-export default function Running() {
+export type RewardInfoProps = {
+  challenge_goal: number;
+  time: string;
+  distance: number;
+  calorie: string;
+  status: string;
+};
+
+export const Running = () => {
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
-  const dispatch = useDispatch<AppDispatch>();
+  const [percent, setPercent] = useState(0);
+  const [rewardsInfo, setRewardsInfo] = useState({
+    challenge_goal: 0,
+    time: "00:00:00",
+    distance: 0,
+    calorie: "0",
+    status: "play",
+  });
+  const [modalClicked, setModalClicked] = useState(false);
 
-  const start = useSelector((state: RootState) => state.rewards.start);
-  const check = useSelector((state: RootState) => state.rewards.check);
-  const stop = useSelector((state: RootState) => state.rewards.stop);
-  const end = useSelector((state: RootState) => state.rewards.end);
+  const USER_ID = sessionStorage.getItem("id");
+  const MENT = sessionStorage.getItem("ment");
 
-  //user location
+  const { start, startDone, check, checkDone, stop, stopDone, end, endDone } =
+    useAppSelector((state: RootState) => state.rewards);
+
+  //사용자 위치 확인하기
   const findUserLocation = (position: {
     coords: { longitude: number; latitude: number };
   }) => {
@@ -36,10 +50,6 @@ export default function Running() {
       longitude: position.coords.longitude,
       latitude: position.coords.latitude,
     });
-  };
-
-  const notFoundLocation = () => {
-    alert("위치를 찾을 수 없습니다.");
   };
 
   useEffect(() => {
@@ -53,95 +63,149 @@ export default function Running() {
     }
   }, []);
 
-  /*   useEffect(() => {
-    //check 주기적으로 호출
-    let interval = setInterval(() => {
-      checkRunningStateAndFetch(rewardRunningCheck);
-    }, 30000);
-    // forceEnd=true 일 경우 강제 종료처리
-    if (check.forceEnd) {
-      clearInterval(interval);
-      checkRunningStateAndFetch(rewardRunningEnd);
-    }
-  }, [position]); */
+  //페이지 접속하자마자 start API 호출
+  useRewardStart(position);
+  const { handleError } = useRewardError(
+    start,
+    position,
+    setPosition,
+    rewardsInfo,
+    setRewardsInfo
+  );
 
-  //running 상태 체크, dispatch 함수
-  const checkRunningStateAndFetch = (
-    runningState: (arg0: { longitude: string; latitude: string }) => any
-  ) => {
-    dispatch(
-      runningState({
-        longitude: position.longitude.toString(),
-        latitude: position.latitude.toString(),
-      })
-    );
-  };
+  useEffect(() => {
+    if (startDone) {
+      if (start?.isSuccess) {
+        setRewardsInfo({
+          ...rewardsInfo,
+          challenge_goal: start.result.challenge_goal,
+          time: start.result.time,
+          distance: start.result.distance,
+          calorie: start.result.calorie,
+          status: "pause",
+        });
+      } else {
+        handleError(start);
+      }
+    }
+  }, [start, startDone]);
+
+  const handleCheck = useRewardCheck(position, false);
+  const handleRecheck = useRewardCheck(position, true);
+
+  let checkInterval: NodeJS.Timer | undefined;
+  // 10초에 한번씩 check api 호출
+  useEffect(() => {
+    if (rewardsInfo.status === "pause") {
+      checkInterval = setInterval(() => handleCheck, 10000);
+    }
+  }, [rewardsInfo.status]);
+
+  useEffect(() => {
+    if (checkDone) {
+      if (check?.isSuccess) {
+        setRewardsInfo({
+          ...rewardsInfo,
+          challenge_goal: check.result.challenge_goal,
+          time: check.result.time,
+          distance: check.result.distance,
+          calorie: check.result.calorie,
+          status: "pause",
+        });
+        setPercent(
+          Math.floor(rewardsInfo.distance / rewardsInfo.challenge_goal) * 100
+        );
+      } else {
+        handleError(check);
+      }
+    }
+  }, [check, checkDone, rewardsInfo]);
+
+  //일시정지 (stop) api 호출
+  useEffect(() => {
+    if (stopDone) {
+      clearInterval(checkInterval);
+      if (stop?.isSuccess) {
+        setRewardsInfo({
+          ...rewardsInfo,
+          challenge_goal: stop.result.challenge_goal,
+          time: stop.result.time,
+          distance: stop.result.distance,
+          calorie: stop.result.calorie,
+          status: "stop",
+        });
+        setPercent(
+          Math.floor(rewardsInfo.distance / rewardsInfo.challenge_goal) * 100
+        );
+      } else {
+        handleError(stop);
+      }
+    }
+  }, [stop, stopDone, rewardsInfo]);
+
+  useEffect(() => {
+    if (percent === 100) {
+      setRewardsInfo({ ...rewardsInfo, status: "stop" });
+    }
+  }, [percent, rewardsInfo]);
 
   return (
     <section css={styles.containerStyle}>
       <div css={styles.runningTimeStyle}>
         <img src={clock} alt="clock" />
         <p>
-          진행시간 <span>09:47:00</span>
+          진행시간 <span>{rewardsInfo.time}</span>
         </p>
       </div>
       <h1 css={styles.titleStyle}>
-        목표를 향해
-        <br />
-        달려가고 있어요!
+        {rewardsInfo.status === "play"
+          ? `${USER_ID}${MENT}`
+          : "목표를 향해\n달려가고 있어요!"}
       </h1>
-      <div css={styles.runningGraphStyle}>
+      <div css={styles.runningGraphStyle(percent)}>
         <div css={styles.runningGraphInnerStyle}>
           <div css={styles.textWrapStyle}>
             <img src={runAlone} alt="running" />
             <p css={distanceStyle}>
-              4.00<span className="kilometer">km</span>
+              {rewardsInfo.distance}
+              <span className="kilometer">km</span>
             </p>
             <p css={styles.distanceGoalStyle}>
-              목표거리 <span className="goal">5.00</span>km
+              목표거리
+              <span className="goal">{rewardsInfo.challenge_goal}</span>km
             </p>
+            <div css={styles.startPointStyle} />
+            <div css={styles.endPointStyle} />
           </div>
         </div>
-        {/*         {
-          {
-            start: (
-              <div
-                css={styles.btnRoundStyle(play)}
-                onClick={() => checkRunningStateAndFetch(rewardRunningStart)}
-              />
-            ),
-            running: {
-              stop: (
-                <div
-                  css={styles.btnRoundStyle(pause)}
-                  onClick={() => checkRunningStateAndFetch(rewardRunningStop)}
-                />
-              ),
-              end: (
-                <div
-                  css={styles.btnRoundStyle(cam)}
-                  onClick={() => {
-                    checkRunningStateAndFetch(rewardRunningEnd);
-                    dispatch(changeProcess("photo"));
-                  }}
-                />
-              ),
-            }[check.distance >= end.distance ? "end" : "stop"],
-          }[start.distance > 0 ? "running" : "start"]
-        } */}
-        <div
-          css={styles.btnRoundStyle(play)}
-          onClick={() => {
-            dispatch(changeProcess("photo"));
-          }}
+        <RunningButton
+          position={position}
+          rewardsInfo={rewardsInfo}
+          setModalClicked={setModalClicked}
         />
       </div>
       <div css={styles.runningFootStyle}>
         <img src={fire} alt="fire" css={{ marginRight: 17 }} />
         <p style={{ fontSize: 14, fontWeight: 500 }}>
-          현재 <span>120</span>Kcal가 소모되었어요.
+          현재 <span>{rewardsInfo.calorie}</span>Kcal가 소모되었어요.
         </p>
       </div>
+      <ModalAlert
+        isOpen={modalClicked}
+        title={"재시작하시겠습니까?"}
+        size="modal"
+        description="마이페이지에서 비밀번호 변경이 가능해요."
+        buttonCancelTitle="취소"
+        onCancel={() => {
+          setModalClicked(false);
+          checkInterval = setInterval(() => handleCheck, 10000);
+        }}
+        buttonConfirmTitle="재시작하기"
+        onConfirm={() => {
+          setModalClicked(false);
+          checkInterval = setInterval(() => handleRecheck, 10000);
+        }}
+      />
     </section>
   );
-}
+};

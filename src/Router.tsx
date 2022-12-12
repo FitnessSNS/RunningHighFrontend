@@ -14,7 +14,6 @@ import { SocialNickname } from "./pages/Auth/Social/Nickname";
 import { FindPassword } from "./pages/Auth/FindPassword";
 import { MyInfo } from "./pages/Mypage/MyInfo";
 import { MyCoupon } from "./pages/Mypage/MyCoupon";
-import { Test } from "./pages/test";
 
 export const Router: FC = () => {
   return (
@@ -37,7 +36,6 @@ export const Router: FC = () => {
         <Route path="/findpwd" element={<FindPassword />} />
         <Route path="/myinfo" element={<MyInfo />} />
         <Route path="/mycoupon" element={<MyCoupon />} />
-        <Route path="/test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

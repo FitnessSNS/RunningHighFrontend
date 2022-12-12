@@ -10,22 +10,18 @@ export const containerStyle = css`
 
 export const runningTimeStyle = css`
   display: flex;
-  ${theme.flexBox("row", "center", "space-between")};
-
-  width: 148px;
-  height: 15px;
+  ${theme.flexBox("row", "center", "center")};
   margin: 40px auto 20px;
 
   p {
     padding-left: 6px;
-    width: calc(100% - 14px);
     color: #888888;
     ${theme.fontStyle("Pretendard-Regular", "normal", "400", "15px")};
     letter-spacing: -0.25px;
   }
 
   span {
-    padding-left: 12px;
+    padding-left: 6px;
   }
 `;
 
@@ -37,7 +33,7 @@ export const titleStyle = css`
   letter-spacing: -0.25px;
 `;
 
-export const runningGraphStyle = css`
+export const runningGraphStyle = (percent: number) => css`
   ${theme.positionCenterX("absolute")};
   width: 269px;
   height: 269px;
@@ -47,14 +43,39 @@ export const runningGraphStyle = css`
   :after {
     content: "";
     ${theme.positionLeftTop("absolute")};
-    width: 269px;
-    height: 269px;
+    width: 270px;
+    height: 270px;
     border-radius: 50%;
     border: none;
-    background: conic-gradient(transparent 0% 56%, #ddd 56% 70%, #fff 70% 100%);
+    background: conic-gradient(
+      transparent 0% ${percent}%,
+      #ddd ${percent}% 70%,
+      #fff 70% 100%
+    );
     rotate: 233deg;
     z-index: -1;
   }
+`;
+export const startPointStyle = css`
+  ${theme.positionLeftBottom("absolute")};
+  left: -68px;
+  bottom: -37px;
+  width: 15.5px;
+  height: 15.5px;
+  background-image: ${theme.gradient.running};
+  border-radius: 50%;
+`;
+
+export const endPointStyle = css`
+  ${theme.positionRightBottom("absolute")};
+  /* right: -70px;
+  bottom: -35px; */
+  right: -68px;
+  bottom: -37px;
+  width: 15.5px;
+  height: 15.5px;
+  background-color: #ddd;
+  border-radius: 50%;
 `;
 
 export const runningGraphInnerStyle = css`

@@ -11,10 +11,10 @@ import {
 
 export interface RewardState {
   isLoading: boolean;
-  user: any;
-  userLoading: boolean;
-  userDone: boolean;
-  userError: any;
+  rewardUser: any;
+  rewardUserLoading: boolean;
+  rewardUserDone: boolean;
+  rewardUserError: any;
   type: any;
   typeLoading: boolean;
   typeDone: boolean;
@@ -39,10 +39,10 @@ export interface RewardState {
 
 const initialState: RewardState = {
   isLoading: false,
-  user: null,
-  userLoading: false,
-  userDone: false,
-  userError: null,
+  rewardUser: null,
+  rewardUserLoading: false,
+  rewardUserDone: false,
+  rewardUserError: null,
   type: null,
   typeLoading: false,
   typeDone: false,
@@ -72,19 +72,19 @@ const rewardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getRewardUser.pending, (state, action) => {
-        state.userLoading = true;
-        state.userDone = false;
+        state.rewardUserLoading = true;
+        state.rewardUserDone = false;
       })
       .addCase(getRewardUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.userLoading = false;
-        state.userDone = true;
-        state.userError = null;
+        state.rewardUser = action.payload;
+        state.rewardUserLoading = false;
+        state.rewardUserDone = true;
+        state.rewardUserError = null;
       })
       .addCase(getRewardUser.rejected, (state, action) => {
-        state.userLoading = false;
-        state.userDone = false;
-        state.userError = action.payload;
+        state.rewardUserLoading = false;
+        state.rewardUserDone = false;
+        state.rewardUserError = action.payload;
       })
       .addCase(getRewardType.pending, (state, action) => {
         state.typeLoading = true;

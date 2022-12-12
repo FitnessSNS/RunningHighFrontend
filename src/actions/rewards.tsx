@@ -29,8 +29,16 @@ export const rewardRunningStart = createAsyncThunk(
 
 export const rewardRunningCheck = createAsyncThunk(
   "REWARD_RUNNING_CHECK",
-  async (data: { longitude: string; latitude: string }): Promise<any> => {
-    const response = await instance.post("/rewards/running/check", data);
+  async (data: {
+    longitude: string;
+    latitude: string;
+    isRestart: boolean;
+  }): Promise<any> => {
+    const response = await instance.post(
+      `/rewards/running/check?isRestart=${data.isRestart}`,
+      { longitude: data.longitude, latitude: data.latitude }
+    );
+    console.log(response.data);
     return response.data;
   }
 );
@@ -45,8 +53,15 @@ export const rewardRunningStop = createAsyncThunk(
 
 export const rewardRunningEnd = createAsyncThunk(
   "REWARD_RUNNING_END",
-  async (data: { longitude: string; latitude: string }): Promise<any> => {
-    const response = await instance.post("/rewards/running/end", data);
+  async (data: {
+    longitude: string;
+    latitude: string;
+    forceEnd: boolean;
+  }): Promise<any> => {
+    const response = await instance.post(
+      `/rewards/running/end?forceEnd=${data.forceEnd}`,
+      { longitude: data.longitude, latitude: data.latitude }
+    );
     return response.data;
   }
 );
