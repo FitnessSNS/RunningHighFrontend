@@ -196,7 +196,7 @@ export const useRewardError = (
           document.cookie = "";
           break;
         default:
-          alert(RewardState.message);
+          console.log(RewardState.message);
           //로그아웃
           dispatch(localLogout(document.cookie.substring(4)));
           document.cookie = "";
