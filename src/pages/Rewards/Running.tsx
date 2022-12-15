@@ -8,6 +8,8 @@ import { distanceStyle } from "../Main/styles";
 
 import { useRewardStart, useRewardCheck } from "./utils/api";
 import { notFoundLocation, useRewardError } from "./utils/handleError";
+// import useInterval from "./utils/useInterval";
+
 import { RunningButton } from "./components/RunningButton";
 import ModalAlert from "src/components/ModalAlert";
 
@@ -33,6 +35,7 @@ export const Running = () => {
     calorie: "0",
     status: "play",
   });
+  const [timerInterval, setTimerInterval] = useState<void | undefined>();
   const [modalClicked, setModalClicked] = useState(false);
 
   const USER_ID = sessionStorage.getItem("id");
@@ -93,13 +96,17 @@ export const Running = () => {
   const handleCheck = useRewardCheck(position, false);
   const handleRecheck = useRewardCheck(position, true);
 
-  let checkInterval: NodeJS.Timer | undefined;
-  // 10초에 한번씩 check api 호출
-  useEffect(() => {
-    if (rewardsInfo.status === "pause") {
-      checkInterval = setInterval(() => handleCheck, 10000);
-    }
-  }, [rewardsInfo.status]);
+  // 100초에 한번씩 check api 호출
+  // const customInterval = useInterval(
+  //   () => handleCheck,
+  //   rewardsInfo.status === "pause" ? 1000 : null
+  // );
+
+  // useEffect(() => {
+  //   if (rewardsInfo.status === "pause") {
+  //     setTimerInterval(customInterval);
+  //   }
+  // }, [rewardsInfo.status]);
 
   useEffect(() => {
     if (checkDone) {
@@ -124,7 +131,7 @@ export const Running = () => {
   //일시정지 (stop) api 호출
   useEffect(() => {
     if (stopDone) {
-      clearInterval(checkInterval);
+      // clearInterval(checkInterval);
       if (stop?.isSuccess) {
         setRewardsInfo({
           ...rewardsInfo,
@@ -198,12 +205,12 @@ export const Running = () => {
         buttonCancelTitle="취소"
         onCancel={() => {
           setModalClicked(false);
-          checkInterval = setInterval(() => handleCheck, 10000);
+          // checkInterval = setInterval(() => handleCheck, 10000);
         }}
         buttonConfirmTitle="재시작하기"
         onConfirm={() => {
           setModalClicked(false);
-          checkInterval = setInterval(() => handleRecheck, 10000);
+          // checkInterval = setInterval(() => handleRecheck, 10000);
         }}
       />
     </section>

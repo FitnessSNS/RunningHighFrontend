@@ -20,15 +20,13 @@ export const Header = () => {
   const process = useAppSelector((state) => state.page.process);
   const dispatch = useAppDispatch();
 
-  const handlePage = () => dispatch(changeProcess("start"));
-
   return (
     <>
       {
         {
           start: <HeaderContainer />,
-          running: <CloseBox onClick={() => handlePage()} />,
-          complete: <CloseBox onClick={() => handlePage()} />,
+          running: <CloseBox />,
+          complete: <CloseBox />,
         }[process]
       }
     </>
@@ -74,7 +72,7 @@ export const HeaderContainer = () => {
   );
 };
 
-const CloseBox = (onClick?: clickFuncType) => {
+const CloseBox = () => {
   const navigate = useNavigate();
 
   return (
