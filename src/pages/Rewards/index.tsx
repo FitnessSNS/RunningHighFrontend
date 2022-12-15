@@ -1,4 +1,6 @@
 /** @jsxImportSource @emotion/react */
+import { Complete } from "./Complete";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useAppSelector } from "src/app/hooks";
 import instance from "src/libs/config";
@@ -7,9 +9,9 @@ import { persistor } from "src/index";
 import { Start } from "./Start";
 import { Running } from "./Running";
 import { Photo } from "./Photo";
-import { Complete } from "./Complete";
 
 export const Rewards = () => {
+  const navigate = useNavigate();
   const process = useAppSelector((state) => state.page.process);
 
   // 브라우저 창을 닫을 때 로컬스토리지 초기화
@@ -29,6 +31,8 @@ export const Rewards = () => {
     if (document.cookie) {
       instance.defaults.headers["x-access-token"] =
         document.cookie.substring(4);
+    } else {
+      navigate("/login");
     }
   }, []);
 
