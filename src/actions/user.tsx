@@ -47,6 +47,19 @@ export const localLogin = createAsyncThunk(
   "LOCAL_LOGIN",
   async (data: { email: string; password: string }): Promise<any> => {
     const response = await instance.post("/auth/signIn/local", data);
+    document.cookie = `rwtS${response.data.result.accessToken}`;
+    return response.data;
+  }
+);
+
+export const localLogout = createAsyncThunk(
+  "LOCAL_LOGOUT",
+  async (token: string): Promise<any> => {
+    const response = await instance.get("/auth/logout", {
+      headers: {
+        "x-access-token": token,
+      },
+    });
     return response.data;
   }
 );

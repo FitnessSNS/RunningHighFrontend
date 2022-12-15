@@ -3,8 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProcess } from "src/reducers/process";
+import { RootState } from "src/app/store";
+
+import axios from "axios";
+
 import { Record } from "src/pages/Rewards/utils/Record";
 import Button from "src/components/Button";
+import ModalAlert from "src/components/ModalAlert";
+
 import * as styles from "./css/photoStyles";
 import camera from "src/assets/camera.svg";
 import frameTopLeft from "src/assets/frame_top_left.svg";
@@ -12,11 +18,8 @@ import frameTopRight from "src/assets/frame_top_right.svg";
 import frameBottomLeft from "src/assets/frame_bottom_left.svg";
 import frameBottomRight from "src/assets/frame_bottom_right.svg";
 import refresh from "src/assets/icon/ico_refresh.svg";
-import axios from "axios";
-import ModalAlert from "src/components/ModalAlert";
-import { RootState } from "src/app/store";
 
-export default function Photo() {
+export const Photo = () => {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,12 +47,7 @@ export default function Photo() {
       return response.data;
     } catch (err) {
       console.error(err);
-      <ModalAlert
-        isOpen={modal}
-        title="사진 인증이 정상적으로\n진행되지 않았어요!"
-        buttonTitle="확인"
-        onClick={() => setModal(!modal)}
-      />;
+      setModal(false);
     }
   };
 
@@ -99,13 +97,22 @@ export default function Photo() {
           size="large"
           id="btnGetReward"
           onClick={() => {
-            // uploadPhoto();
+            uploadPhoto();
             dispatch(changeProcess("complete"));
           }}
         >
           이 사진으로 리워드 적립하기
         </Button>
       </div>
+      {!modal && (
+        <ModalAlert
+          isOpen={modal}
+          title="사진 인증이 정상적으로\n진행되지 않았어요!"
+          size="modal"
+          buttonConfirmTitle="확인"
+          onConfirm={() => setModal(!modal)}
+        />
+      )}
     </div>
   );
-}
+};
