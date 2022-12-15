@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   display: flex;
@@ -26,12 +27,12 @@ export const infoBlock = css`
   span {
     font-size: 15px;
     font-weight: 400;
-    color: #666666;
+    color: ${theme.color.gray[700]};
   }
   h1 {
     font-size: 24px;
     font-weight: 700;
-    color: #333333;
+    color: ${theme.color.gray[800]};
     margin-top: 8px;
   }
 `;
@@ -47,7 +48,7 @@ export const listBlock = css`
     justify-content: center;
     font-size: 14px;
     font-weight: 400;
-    color: #333333;
+    color: ${theme.color.gray[800]};
   }
   img {
     padding-bottom: 19px;
@@ -65,20 +66,20 @@ export const exerciseBlock = css`
   height: 94px;
   border-radius: 10px;
   display: flex;
-  background-color: #ffffff;
+  background-color: ${theme.color.white};
   div {
     margin: auto;
   }
   span {
     font-size: 14px;
     font-weight: 400;
-    color: #666666;
+    color: ${theme.color.gray[700]};
     padding-left: 6px;
   }
   h1 {
     font-size: 18px;
     font-weight: 700;
-    color: #333333;
+    color: ${theme.color.gray[800]};
     padding-top: 14px;
   }
 `;
@@ -89,7 +90,7 @@ export const bottomContainer = css`
   p {
     font-size: 12px;
     font-weight: 400;
-    color: #888888;
+    color: ${theme.color.gray[500]};
   }
 `;
 
@@ -98,5 +99,5 @@ export const menuBlock = css`
 `;
 
 export const menuLine = css`
-  border-bottom: 1px solid #e9e9e9;
+  border-bottom: 1px solid ${theme.color.line};
 `;

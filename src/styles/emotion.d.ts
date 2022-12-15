@@ -10,6 +10,9 @@ declare module "@emotion/react" {
       };
       error: string;
       disabled: string;
+      kakao: string;
+      line: string;
+      white: string;
       gray: {
         50: string;
         100: string;

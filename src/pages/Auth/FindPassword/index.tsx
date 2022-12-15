@@ -25,6 +25,7 @@ export const FindPassword = () => {
   const navigate = useNavigate();
   const [modal, setModal] = useState<boolean>(false);
   const [hide, setHide] = useState<boolean>(false);
+
   const {
     register,
     setValue,

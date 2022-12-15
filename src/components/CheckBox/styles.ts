@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 import { CheckBoxType } from "./index";
 
 export const Type = {
@@ -19,7 +20,7 @@ export const checkbox = css`
   align-items: center;
   label {
     padding-left: 10px;
-    color: #333333;
+    color: ${theme.color.gray[800]};
   }
   img {
     cursor: pointer;

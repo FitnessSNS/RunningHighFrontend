@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   height: 100vh;
@@ -19,7 +20,7 @@ export const topContainer = css`
     padding-top: 20px;
     font-size: 20px;
     font-weight: 600;
-    color: #333333;
+    color: ${theme.color.gray[800]};
   }
 `;
 export const middleContainer = css`
@@ -36,7 +37,7 @@ export const bottomContainer = css`
     justify-content: center;
     font-size: 14px;
     font-weight: 500;
-    color: #666666;
+    color: ${theme.color.gray[700]};
   }
   li {
     padding: 33px 20px;
