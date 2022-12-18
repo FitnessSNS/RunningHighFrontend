@@ -9,7 +9,7 @@ export const useRewardUserError = (RewardUser: any) => {
   const dispatch = useAppDispatch();
 
   const handleError = useCallback(
-    (RewardState: { code: any; message: any }) => {
+    (RewardUser: { code: any; message: any }) => {
       switch (RewardUser.code) {
         case 1053:
           if (document.cookie) {
@@ -21,15 +21,16 @@ export const useRewardUserError = (RewardUser: any) => {
         case 1054:
           dispatch(requestToken());
           break;
-        default:
+        case 1055:
           alert(RewardUser.message);
           //로그아웃
           dispatch(localLogout(document.cookie.substring(4)));
           document.cookie = "";
+          navigate("/login");
           break;
       }
     },
-    [RewardUser]
+    [RewardUser?.code]
   );
 
   return { handleError };
