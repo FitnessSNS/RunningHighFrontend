@@ -38,7 +38,7 @@ export const rewardRunningCheck = createAsyncThunk(
       `/rewards/running/check?isRestart=${data.isRestart}`,
       { longitude: data.longitude, latitude: data.latitude }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   }
 );
