@@ -159,11 +159,11 @@ export const Running = () => {
               isRestart: false,
             })
           ),
-        50000
+        1000
       );
       return () => window.clearInterval(intervalRef.current);
     }
-  }, []);
+  }, [position.latitude, position.longitude, check?.result]);
 
   //check handle error
   useEffect(() => {
@@ -171,13 +171,8 @@ export const Running = () => {
       switch (check?.code) {
         case 1053:
           //로그인 토큰이 없는 경우
-          if (document.cookie && !document.cookie.includes("undefined")) {
-            dispatch(requestToken());
-            return;
-          } else {
-            navigate("/login");
-            return;
-          }
+          dispatch(requestToken());
+          return;
         case 1054:
           //로그인 토큰 에러
           setModal(true);
@@ -225,7 +220,8 @@ export const Running = () => {
           return;
       }
     }
-  }, [check?.code]);
+  }, [check?.code, position]);
+
   console.log(runState);
   console.log("check", check);
   return (
