@@ -37,8 +37,9 @@ const RunningLayout = (props: {
     if (props.runData.distance > 0) {
       setPercent((props.runData.distance / props.runData.challenge_goal) * 70);
     }
-  }, [percent, props.runData.distance]);
+  }, [percent, props.runData]);
 
+  useLayoutEffect(() => {}, [props.runData]);
   useLayoutEffect(() => {
     if (props.runState === "pause") {
       setButtonImage(pause);
