@@ -56,27 +56,27 @@ export const runningGraphStyle = (percent: number) => css`
     z-index: -1;
   }
 `;
-export const startPointStyle = css`
-  ${theme.positionLeftBottom("absolute")};
-  left: -68px;
-  bottom: -37px;
-  width: 15.5px;
-  height: 15.5px;
-  background-image: ${theme.gradient.running};
-  border-radius: 50%;
-`;
+// export const startPointStyle = css`
+//   ${theme.positionLeftBottom("absolute")};
+//   left: -68px;
+//   bottom: -37px;
+//   width: 15.5px;
+//   height: 15.5px;
+//   background-image: ${theme.gradient.running};
+//   border-radius: 50%;
+// `;
 
-export const endPointStyle = css`
-  ${theme.positionRightBottom("absolute")};
-  /* right: -70px;
-  bottom: -35px; */
-  right: -68px;
-  bottom: -37px;
-  width: 15.5px;
-  height: 15.5px;
-  background-color: #ddd;
-  border-radius: 50%;
-`;
+// export const endPointStyle = css`
+//   ${theme.positionRightBottom("absolute")};
+//   /* right: -70px;
+//   bottom: -35px; */
+//   right: -68px;
+//   bottom: -37px;
+//   width: 15.5px;
+//   height: 15.5px;
+//   background-color: #ddd;
+//   border-radius: 50%;
+// `;
 
 export const runningGraphInnerStyle = css`
   ${theme.positionCenterX("absolute")};
@@ -104,12 +104,13 @@ export const textWrapStyle = css`
 export const distanceGoalStyle = css`
   color: ${theme.color.gray[500]};
   ${theme.fontStyle("Pretendard-Regular", "normal", "400", "16px", "normal")};
+  text-align: center;
 
   .goal {
     font-weight: 700;
   }
 `;
-export const btnRoundStyle = (status: string) => css`
+export const btnRoundStyle = (status: any) => css`
   ${theme.positionCenterX("absolute")};
   bottom: 0;
   background: url(${status}) no-repeat;
