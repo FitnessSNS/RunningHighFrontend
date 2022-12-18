@@ -95,7 +95,7 @@ export const Main = () => {
                   {rewardUserDone
                     ? rewardUser.isSuccess
                       ? rewardUser.result.activity.distance_stack > 0
-                        ? rewardUser.result.activity.distance_stack
+                        ? rewardUser.result.activity.distance_stack / 1000
                         : "-.--"
                       : "-.--"
                     : "-.--"}
