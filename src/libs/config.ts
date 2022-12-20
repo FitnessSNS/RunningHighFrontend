@@ -14,6 +14,10 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 요청이 전달되기 전에 작업 수행
+    if (document.cookie) {
+      instance.defaults.headers["x-access-token"] =
+        document.cookie.substring(4);
+    }
     return config;
   },
   function (error) {

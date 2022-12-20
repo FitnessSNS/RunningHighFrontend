@@ -6,7 +6,7 @@ import Button from "src/components/Button";
 import pollen from "src/assets/pollen.svg";
 import rewardResult from "src/assets/rewardResult.svg";
 
-export default function Complete() {
+export const Complete = () => {
   return (
     <>
       <img src={pollen} alt="pollen" css={styles.pollenImgStyles} />
@@ -59,4 +59,4 @@ export default function Complete() {
       </section>
     </>
   );
-}
+};
