@@ -53,24 +53,21 @@ export const Main = () => {
     if (!rewardUser?.isSuccess) {
       switch (rewardUser?.code) {
         case 1053:
-          //로그인 토큰이 없는 경우
+        case 1054:
+          //로그인 토큰이 없는 경우 or 토큰 에러
           if (document.cookie) {
             dispatch(requestToken());
           } else {
-            navigate("/login");
+            setModal(true);
           }
-          break;
-        case 1054:
-          //로그인 토큰 에러
-          setModal(true);
           break;
         case 1055:
           //로그아웃 상태
-          navigate("/login");
+          setModal(true);
           break;
       }
     }
-  }, [rewardUser?.code]);
+  }, []);
   console.log(rewardUser);
 
   const unitOfCalorie = (cal: string) => {
@@ -150,7 +147,7 @@ export const Main = () => {
       {modal && (
         <ModalAlert
           isOpen={modal}
-          title={"알 수 없는 오류가 발생하였습니다.\n다시 로그인 해주세요"}
+          title={"로그인 세션이 만료되었습니다.\n다시 로그인 해주세요"}
           size="modal"
           buttonConfirmTitle="확인"
           onConfirm={() => {
