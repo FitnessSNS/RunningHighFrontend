@@ -63,6 +63,7 @@ export const faceImgStyle = css`
 export const textwrapper = css`
   ${theme.positionCenterX("absolute")};
   top: 85px;
+  width: 100%;
 `;
 
 export const textStyle = css`
