@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   height: 100vh;
@@ -35,13 +36,13 @@ export const checkBlock = css`
     padding-left: 10px;
     font-size: 14px;
     font-weight: 400;
-    color: #333333;
+    color: ${theme.color.gray[800]};
   }
   input {
     margin: 0;
     width: 22px;
     height: 22px;
-    border: 1px solid #dddddd;
+    border: 1px solid ${theme.color.gray[300]};
     bordr-radius: 4px;
   }
 `;
@@ -57,8 +58,8 @@ export const socialBtn = css`
   height: 58px;
   border: none;
   border-radius: 10px;
-  color: #333333;
-  background-color: #f8eb00;
+  color: ${theme.color.gray[800]};
+  background-color: ${theme.color.kakao};
   font-size: 16px;
   font-weight: 700;
   margin: 15px 0;
@@ -81,10 +82,10 @@ export const list = css`
     padding: 0 14px;
     font-size: 14px;
     font-weight: 400;
-    color: #888888;
+    color: ${theme.color.gray[500]};
   }
 `;
 
 export const listLine = css`
-  border-right: 1px solid #e9e9e9;
+  border-right: 1px solid ${theme.color.line};
 `;

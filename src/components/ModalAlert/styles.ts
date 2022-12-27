@@ -1,7 +1,8 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const titleBlock = css`
-  color: #333333;
+  color: ${theme.color.gray[800]};
   font-size: 20px;
   font-weight: 700;
   line-height: 130%;
@@ -11,7 +12,7 @@ export const titleBlock = css`
 `;
 
 export const descriptionBlock = css`
-  color: #666666;
+  color: ${theme.color.gray[700]};
   font-size: 14px;
   font-weight: 400;
   line-height: 100%;

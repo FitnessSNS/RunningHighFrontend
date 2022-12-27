@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   width: 335px;
   height: 112px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: ${theme.color.white};
   display: flex;
   padding: 16px;
 `;
@@ -13,8 +14,8 @@ export const imgBlock = css`
   width: 80px;
   height: 80px;
   line-height: 80px;
-  background-color: #f0f0f3;
-  border: 1px solid #e9e9e9;
+  background-color: ${theme.color.gray[100]};
+  border: 1px solid ${theme.color.line};
   border-radius: 8px;
   text-align: center;
   img {
@@ -28,7 +29,7 @@ export const infoBlock = css`
   h1 {
     font-size: 14px;
     font-weight: 700;
-    color: #333333;
+    color: ${theme.color.gray[800]};
     padding-top: 7px;
   }
 `;
@@ -40,7 +41,7 @@ export const top = css`
   span {
     font-size: 12px;
     font-weight: 400;
-    color: #888888;
+    color: ${theme.color.gray[500]};
   }
 `;
 
@@ -55,6 +56,6 @@ export const bottom = css`
     padding-left: 6px;
     font-size: 14px;
     font-weight: 400;
-    color: #333333;
+    color: ${theme.color.gray[800]};
   }
 `;

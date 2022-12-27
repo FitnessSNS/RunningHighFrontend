@@ -87,7 +87,7 @@ export const Login = () => {
   }, [action, login, loginDone, navigate]);
 
   useEffect(() => {
-    if (socialAction) {
+    if (socialAction && socialCodeDone) {
       if (socialCode?.code === 1000) {
         setSocialAction(false);
         window.location.href = socialCode?.result.authURI;
@@ -96,7 +96,7 @@ export const Login = () => {
         setModalTitle(socialCode?.message);
       }
     }
-  }, [socialAction, socialCode]);
+  }, [socialAction, socialCode, socialCodeDone]);
 
   return (
     <section css={styles.container}>
@@ -149,7 +149,7 @@ export const Login = () => {
         </button>
         <div>
           <ul css={styles.list}>
-            <Link to="/signupemail">
+            <Link to="/terms">
               <li css={styles.listLine}>회원가입</li>
             </Link>
             <li css={styles.listLine}>이메일 찾기</li>

@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   width: 100%;
@@ -8,7 +9,7 @@ export const container = css`
   top: 0;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background-color: ${theme.color.white};
 `;
 
 export const leftBlock = css`

@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   height: 100vh;
@@ -25,10 +26,10 @@ export const button = css`
   height: 30px;
   right: 14px;
   top: 14px;
-  background-color: #f0f0f3;
+  background-color: ${theme.color.gray[100]};
   border: none;
   border-radius: 6px;
-  color: #666666;
+  color: ${theme.color.gray[700]};
   font-size: 14px;
   font-weight: 400px;
   cursor: pointer;
@@ -43,7 +44,7 @@ export const timerBlock = css`
   top: 22px;
   font-size: 14px;
   font-weight: 400;
-  color: #ff5151;
+  color: ${theme.color.gray[700]};
 `;
 
 export const bottomContainer = css`

@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   height: 100vh;
@@ -13,7 +14,7 @@ export const topContainer = css``;
 export const all = css`
   width: 335px;
   height: 58px;
-  border: 1px solid #e9e9e9;
+  border: 1px solid ${theme.color.line};
   border-radius: 10px;
   margin-bottom: 28px;
   display: flex;

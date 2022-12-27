@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { stat } from "fs/promises";
 import {
+  changePwdEmailVerification,
+  changePwdEmailVerificationCode,
   emailVerification,
   emailVerificationCode,
   checkNickname,
@@ -14,6 +16,14 @@ import {
 export interface UserState {
   password: string;
   init: boolean;
+  pwdEmail: any;
+  pwdEmailLoading: boolean;
+  pwdEmailDone: boolean;
+  pwdEmailError: any;
+  pwdEmailCode: any;
+  pwdEmailCodeLoading: boolean;
+  pwdEmailCodeDone: boolean;
+  pwdEmailCodeError: any;
   email: any;
   emailLoading: boolean;
   emailDone: boolean;
@@ -51,6 +61,14 @@ export interface UserState {
 const initialState: UserState = {
   password: "",
   init: false,
+  pwdEmail: null,
+  pwdEmailLoading: false,
+  pwdEmailDone: false,
+  pwdEmailError: null,
+  pwdEmailCode: null,
+  pwdEmailCodeLoading: false,
+  pwdEmailCodeDone: false,
+  pwdEmailCodeError: false,
   email: null,
   emailLoading: false,
   emailDone: false,
@@ -98,6 +116,36 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(changePwdEmailVerification.pending, (state, action) => {
+        state.pwdEmailLoading = true;
+        state.pwdEmailDone = false;
+      })
+      .addCase(changePwdEmailVerification.fulfilled, (state, action) => {
+        state.pwdEmail = action.payload;
+        state.pwdEmailLoading = false;
+        state.pwdEmailDone = true;
+        state.pwdEmailError = null;
+      })
+      .addCase(changePwdEmailVerification.rejected, (state, action) => {
+        state.pwdEmailLoading = false;
+        state.pwdEmailDone = false;
+        state.pwdEmailError = action.payload;
+      })
+      .addCase(changePwdEmailVerificationCode.pending, (state, action) => {
+        state.pwdEmailCodeLoading = true;
+        state.pwdEmailCodeDone = false;
+      })
+      .addCase(changePwdEmailVerificationCode.fulfilled, (state, action) => {
+        state.pwdEmailCode = action.payload;
+        state.pwdEmailCodeLoading = false;
+        state.pwdEmailCodeDone = true;
+        state.pwdEmailCodeError = null;
+      })
+      .addCase(changePwdEmailVerificationCode.rejected, (state, action) => {
+        state.pwdEmailCodeLoading = false;
+        state.pwdEmailCodeDone = false;
+        state.pwdEmailCodeError = action.payload;
+      })
       .addCase(emailVerification.pending, (state, action) => {
         state.emailLoading = true;
         state.emailDone = false;

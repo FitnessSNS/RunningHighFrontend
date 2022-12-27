@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { theme } from "src/styles/theme";
 
 export const container = css`
   height: 100vh;
@@ -23,12 +24,12 @@ export const button = css`
   position: absolute;
   width: 72px;
   height: 30px;
-  left: 243px;
-  top: 12px;
-  background-color: #f0f0f3;
+  right: 14px;
+  top: 14px;
+  background-color: ${theme.color.gray[100]};
   border: none;
   border-radius: 6px;
-  color: #666666;
+  color: ${theme.color.gray[700]};
   font-size: 14px;
   font-weight: 400px;
   cursor: pointer;
@@ -37,10 +38,13 @@ export const button = css`
 export const timerBlock = css`
   display: inline-block;
   position: absolute;
-  width: 35px;
+  width: 30px;
   height: 14px;
-  left: 280px;
+  right: 14px;
   top: 22px;
+  font-size: 14px;
+  font-weight: 400;
+  color: ${theme.color.gray[700]};
 `;
 
 export const bottomContainer = css`

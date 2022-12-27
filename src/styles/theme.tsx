@@ -9,6 +9,9 @@ export const theme: ThemePropsType = {
     },
     error: "#FF6464",
     disabled: "#DDDDDD",
+    kakao: "#F8EB00",
+    line: "#E9E9E9",
+    white: "#FFFFFF",
     gray: {
       50: "#F5F5F8",
       100: "#F0F0F3",

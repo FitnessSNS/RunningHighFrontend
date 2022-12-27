@@ -12,6 +12,7 @@ import { SignupNickname } from "./pages/Auth/Signup/SignupNickname";
 import { SignupEnd } from "./pages/Auth/Signup/SignupEnd";
 import { SocialNickname } from "./pages/Auth/Social/Nickname";
 import { FindPassword } from "./pages/Auth/FindPassword";
+import { Success } from "./pages/Auth/FindPassword/success";
 import { MyInfo } from "./pages/Mypage/MyInfo";
 import { MyCoupon } from "./pages/Mypage/MyCoupon";
 
@@ -34,6 +35,7 @@ export const Router: FC = () => {
         <Route path="/signupnick" element={<SignupNickname />} />
         <Route path="/signupend" element={<SignupEnd />} />
         <Route path="/findpwd" element={<FindPassword />} />
+        <Route path="/success" element={<Success />} />
         <Route path="/myinfo" element={<MyInfo />} />
         <Route path="/mycoupon" element={<MyCoupon />} />
       </Routes>
