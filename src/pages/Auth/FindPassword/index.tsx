@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
 
 import NavBar from "src/components/NavBar";
 import BackButton from "src/components/BackButton";
@@ -15,6 +16,12 @@ import ModalAlert from "src/components/ModalAlert";
 
 import * as styles from "./styles";
 import { emailValidation } from "src/libs/validations/emailValidation";
+import {
+  changePwdEmailVerification,
+  changePwdEmailVerificationCode,
+} from "src/actions/user";
+import { initTimer } from "src/reducers/user";
+import { AppDispatch, RootState } from "src/app/store";
 
 type formData = {
   email: string;
@@ -22,9 +29,15 @@ type formData = {
 };
 
 export const FindPassword = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const [emailAction, setEmailAction] = useState<boolean>(false);
+  const [codeAction, setCodeAction] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
   const [hide, setHide] = useState<boolean>(false);
+  const [again, setAgain] = useState<boolean>(false);
 
   const {
     register,
@@ -34,19 +47,76 @@ export const FindPassword = () => {
   } = useForm<formData>({
     resolver: yupResolver(emailValidation),
   });
+  const { pwdEmail, pwdEmailCode, init } = useSelector(
+    (state: RootState) => state.user
+  );
   const handleChange = ({ name, value }: any) => {
     setValue(name, value, { shouldValidate: true });
   };
   const handleSubmitClick = () => {
-    //api 연결(이메일 인증 요청)s
-    getValues("email");
-    setHide(true);
+    dispatch(
+      changePwdEmailVerification({
+        email: getValues("email"),
+      })
+    );
+    setEmailAction(true);
   };
   const handleDoneClick = () => {
-    //api 연결(인증코드 인증 요청)
-    getValues("code");
-    setModal(true);
+    setAgain(false);
+    dispatch(
+      changePwdEmailVerificationCode({
+        email: pwdEmail.result.userEmail,
+        code: getValues("code"),
+      })
+    );
+    setCodeAction(true);
   };
+
+  const handleModal = useCallback(() => {
+    setModal(!modal);
+    if (emailAction) {
+      setEmailAction(false);
+    } else if (codeAction) {
+      setCodeAction(false);
+    }
+  }, [codeAction, emailAction, modal]);
+
+  useEffect(() => {
+    if (emailAction) {
+      setModal(true);
+      setModalTitle(pwdEmail?.message);
+      if (!pwdEmail?.isSuccess) {
+        setHide(false);
+      } else if (pwdEmail?.isSuccess) {
+        setHide(true);
+      }
+    }
+  }, [emailAction, pwdEmail]);
+
+  useEffect(() => {
+    if (codeAction) {
+      if (pwdEmailCode?.code === 1000) {
+        setHide(false);
+        navigate("/success");
+      } else {
+        setModal(true);
+        setModalTitle(pwdEmailCode?.message);
+      }
+    }
+  }, [codeAction, pwdEmailCode, navigate]);
+
+  useEffect(() => {
+    if (init) {
+      setAgain(true);
+      setHide(false);
+      dispatch(
+        initTimer({
+          init: false,
+        })
+      );
+    }
+  }, [dispatch, init]);
+
   return (
     <>
       <NavBar left={<BackButton />} />
@@ -71,13 +141,17 @@ export const FindPassword = () => {
                   <AuthTimer />
                 </div>
                 <div css={styles.code}>
-                  <Input placholder="인증코드" {...register("code")} />
+                  <Input
+                    placholder="인증코드"
+                    {...register("code")}
+                    onChange={handleChange}
+                  />
                 </div>
                 <ValidationMessage message={errors.code?.message} />
               </>
             ) : (
               <button css={styles.button} onClick={handleSubmitClick}>
-                인증요청
+                {again ? "재요청" : "인증요청"}
               </button>
             )}
           </div>
@@ -94,14 +168,10 @@ export const FindPassword = () => {
       </section>
       <ModalAlert
         isOpen={modal}
-        title={"이메일로 임시 비밀번호가 \n발급되었어요."}
+        title={modalTitle}
         size="modal"
-        description="마이페이지에서 비밀번호 변경이 가능해요."
-        buttonConfirmTitle="로그인하기"
-        onConfirm={() => {
-          setModal(!modal);
-          navigate("/login");
-        }}
+        buttonConfirmTitle="확인"
+        onConfirm={handleModal}
       />
     </>
   );

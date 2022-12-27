@@ -81,3 +81,25 @@ export const socialSignUp = createAsyncThunk(
     return response.data;
   }
 );
+
+export const changePwdEmailVerification = createAsyncThunk(
+  "PWD_CHECK_EMAIL",
+  async (data: { email: string }): Promise<any> => {
+    const response = await instance.post(
+      "/auth/userInfo/emailVerification",
+      data
+    );
+    return response.data;
+  }
+);
+
+export const changePwdEmailVerificationCode = createAsyncThunk(
+  "PWD_CHECK_EMAIL_CODE",
+  async (data: { email: string; code: string }): Promise<any> => {
+    const response = await instance.post(
+      "/auth/userInfo/emailVerification/code",
+      data
+    );
+    return response.data;
+  }
+);
