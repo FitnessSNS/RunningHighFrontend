@@ -8,9 +8,8 @@ import instance from "src/libs/config";
 
 import { requestToken } from "src/actions/token";
 import { changeProcess } from "src/reducers/process";
-import { useRewardUserError } from "./utils";
 
-import { getRewardUser } from "src/actions/rewards";
+import { getRewardUser, rewardRunningStart } from "src/actions/rewards";
 import { HeaderContainer } from "src/components/Header";
 import { FooterContainer } from "src/components/Footer";
 
@@ -18,6 +17,7 @@ import face from "src/assets/face.svg";
 import chart from "src/assets/chart.svg";
 import chartCup from "src/assets/chartCup.svg";
 import btnArrow from "src/assets/btn_arrow.svg";
+import ModalAlert from "src/components/ModalAlert";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const Main = () => {
   );
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { handleError } = useRewardUserError(rewardUser);
+  const [modal, setModal] = useState(false);
   const EXPIRED_TIME = 1000 * 60 * 60 * 1; //1hr
 
   useEffect(() => {
@@ -39,20 +39,8 @@ export const Main = () => {
       dispatch(getRewardUser());
     } else {
       setIsLoggedIn(false);
-      return;
     }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (rewardUserDone) {
-      if (rewardUser?.isSucess) {
-        sessionStorage.setItem("id", rewardUser?.result.userId);
-        sessionStorage.setItem("ment", rewardUser?.result.ment);
-      } else {
-        handleError(rewardUser);
-      }
-    }
-  }, [handleError, rewardUser?.isSucess, rewardUserDone]);
+  }, []);
 
   useEffect(() => {
     //쿠키 만료 시간 직전 토큰 재발급 - 시간 추후 조정 필요
@@ -60,6 +48,38 @@ export const Main = () => {
       dispatch(requestToken());
     }, EXPIRED_TIME);
   }, []);
+
+  useEffect(() => {
+    if (!rewardUser?.isSuccess) {
+      switch (rewardUser?.code) {
+        case 1053:
+          //로그인 토큰이 없는 경우
+          if (document.cookie) {
+            dispatch(requestToken());
+          } else {
+            navigate("/login");
+          }
+          break;
+        case 1054:
+          //로그인 토큰 에러
+          setModal(true);
+          break;
+        case 1055:
+          //로그아웃 상태
+          navigate("/login");
+          break;
+      }
+    }
+  }, [rewardUser?.code]);
+  console.log(rewardUser);
+
+  const unitOfCalorie = (cal: string) => {
+    if (cal.substr(0, 1) === "0") {
+      return cal.substr(1, cal.indexOf(".") - 1);
+    } else {
+      return cal.substr(0, cal.indexOf(".") - 1);
+    }
+  };
 
   return (
     <>
@@ -75,7 +95,7 @@ export const Main = () => {
                   {rewardUserDone
                     ? rewardUser.isSuccess
                       ? rewardUser.result.activity.distance_stack > 0
-                        ? rewardUser.result.activity.distance_stack
+                        ? rewardUser.result.activity.distance_stack / 1000
                         : "-.--"
                       : "-.--"
                     : "-.--"}
@@ -85,7 +105,9 @@ export const Main = () => {
                   {rewardUserDone
                     ? rewardUser.isSuccess
                       ? rewardUser.result.activity.calorie_stack > 0
-                        ? rewardUser.result.activity.calorie_stack
+                        ? unitOfCalorie(
+                            rewardUser.result.activity.calorie_stack
+                          )
                         : 0
                       : 0
                     : 0}
@@ -99,8 +121,8 @@ export const Main = () => {
             className="btnStart"
             onClick={() => {
               if (isLoggedIn) {
-                navigate("/reward");
                 changeProcess("start");
+                navigate("/reward");
               } else {
                 navigate("/login");
               }
@@ -125,6 +147,18 @@ export const Main = () => {
         </ul>
       </main>
       <FooterContainer />
+      {modal && (
+        <ModalAlert
+          isOpen={modal}
+          title={"알 수 없는 오류가 발생하였습니다.\n다시 로그인 해주세요"}
+          size="modal"
+          buttonConfirmTitle="확인"
+          onConfirm={() => {
+            setModal(false);
+            navigate("/login");
+          }}
+        />
+      )}
     </>
   );
 };

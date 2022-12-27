@@ -1,58 +1,43 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
-import { RootState } from "src/app/store";
-import { useAppSelector } from "src/app/hooks";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  rewardRunningCheck,
+  rewardRunningEnd,
+  rewardRunningStart,
+  rewardRunningStop,
+} from "src/actions/rewards";
 
-import * as styles from "./css/runningStyles";
-import { distanceStyle } from "../Main/styles";
+import { requestToken } from "src/actions/token";
+import { localLogout } from "src/actions/user";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
 
-import { useRewardStart, useRewardCheck } from "./utils/api";
-import { notFoundLocation, useRewardError } from "./utils/handleError";
-// import useInterval from "./utils/useInterval";
-
-import { RunningButton } from "./components/RunningButton";
 import ModalAlert from "src/components/ModalAlert";
-
-import runAlone from "src/assets/runAlone.svg";
-import clock from "src/assets/icon/ico_clock.svg";
-import fire from "src/assets/icon/ico_fire.svg";
-
-export type RewardInfoProps = {
-  challenge_goal: number;
-  time: string;
-  distance: number;
-  calorie: string;
-  status: string;
-};
+import RunningLayout from "./components/RunningLayout";
 
 export const Running = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { rewardUser, start, startDone, check, stop, end } = useAppSelector(
+    (state) => state.rewards
+  );
+
+  const intervalRef = useRef<number | undefined>();
+
+  const [runState, setRunState] = useState("play");
   const [position, setPosition] = useState({ longitude: 0, latitude: 0 });
-  const [percent, setPercent] = useState(0);
-  const [rewardsInfo, setRewardsInfo] = useState({
+  const [modal, setModal] = useState(false);
+  const initialRunData = {
+    calorie: 0,
     challenge_goal: 0,
-    time: "00:00:00",
+    check_time: "00:00:00",
     distance: 0,
-    calorie: "0",
-    status: "play",
-  });
-  const [timerInterval, setTimerInterval] = useState<void | undefined>();
-  const [modalClicked, setModalClicked] = useState(false);
-
-  const USER_ID = sessionStorage.getItem("id");
-  const MENT = sessionStorage.getItem("ment");
-
-  const { start, startDone, check, checkDone, stop, stopDone, end, endDone } =
-    useAppSelector((state: RootState) => state.rewards);
-
-  //사용자 위치 확인하기
-  const findUserLocation = (position: {
-    coords: { longitude: number; latitude: number };
-  }) => {
-    setPosition({
-      ...position,
-      longitude: position.coords.longitude,
-      latitude: position.coords.latitude,
-    });
+    exercise_id: 0,
+    forceEnd: false,
+    image: null,
+    nickname: "",
+    time: "00:00:00",
+    user_id: rewardUser?.user_id,
   };
 
   useEffect(() => {
@@ -66,153 +51,223 @@ export const Running = () => {
     }
   }, []);
 
-  //페이지 접속하자마자 start API 호출
-  useRewardStart(position);
-  const { handleError } = useRewardError(
-    start,
-    position,
-    setPosition,
-    rewardsInfo,
-    setRewardsInfo
-  );
+  //사용자 위치 확인하기
+  const findUserLocation = (position: {
+    coords: { longitude: number; latitude: number };
+  }) => {
+    setPosition({
+      ...position,
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude,
+    });
+  };
 
+  const notFoundLocation = () => {
+    alert("위치를 찾을 수 없습니다.\n다시 시도해주세요.");
+  };
+
+  //call start api
   useEffect(() => {
-    if (startDone) {
-      if (start?.isSuccess) {
-        setRewardsInfo({
-          ...rewardsInfo,
-          challenge_goal: start.result.challenge_goal,
-          time: start.result.time,
-          distance: start.result.distance,
-          calorie: start.result.calorie,
-          status: "pause",
-        });
-      } else {
-        handleError(start);
+    dispatch(
+      rewardRunningStart({
+        longitude: position.longitude.toString(),
+        latitude: position.latitude.toString(),
+      })
+    );
+  }, [dispatch, position]);
+  console.log(start);
+
+  //start handle error
+  useEffect(() => {
+    if (!start?.isSuccess) {
+      switch (start?.code) {
+        case 1053:
+          //로그인 토큰이 없는 경우
+          if (document.cookie && !document.cookie.includes("undefined")) {
+            dispatch(requestToken());
+            return;
+          } else {
+            navigate("/login");
+            return;
+          }
+        case 1054:
+          //로그인 토큰 에러
+          setModal(true);
+          return;
+        case 1055:
+          //로그아웃 상태
+          navigate("/login");
+          return;
+        case 1311:
+        case 1312:
+          //위치정보 재확인 요청
+          navigator.geolocation.getCurrentPosition(
+            findUserLocation,
+            notFoundLocation
+          );
+          return;
+        case 3031:
+          //이미 운동을 시작했을 경우 - check 호출
+          setRunState("pause");
+          dispatch(
+            rewardRunningCheck({
+              longitude: position.longitude.toString(),
+              latitude: position.latitude.toString(),
+              isRestart: false,
+            })
+          );
+
+          return;
+        case 3032:
+          //이미 시작한 운동 기록이 있을 경우 - check 호출(재시작)
+          dispatch(
+            rewardRunningCheck({
+              longitude: position.longitude.toString(),
+              latitude: position.latitude.toString(),
+              isRestart: true,
+            })
+          );
+          return;
+        case 3033:
+          //운동기록을 찾을 수 없는 경우 - 일시정지 /메세지 출력 /초기화 /메인 이동
+          dispatch(
+            rewardRunningStop({
+              longitude: position.longitude.toString(),
+              latitude: position.latitude.toString(),
+            })
+          );
+          alert(start?.message);
+          navigate("/");
+          return;
+        case 9000:
+          localLogout(document.cookie);
+          navigate("/");
+          return;
       }
     }
-  }, [start, startDone]);
+  }, [start?.code]);
 
-  const handleCheck = useRewardCheck(position, false);
-  const handleRecheck = useRewardCheck(position, true);
-
-  // 100초에 한번씩 check api 호출
-  // const customInterval = useInterval(
-  //   () => handleCheck,
-  //   rewardsInfo.status === "pause" ? 1000 : null
-  // );
-
-  // useEffect(() => {
-  //   if (rewardsInfo.status === "pause") {
-  //     setTimerInterval(customInterval);
-  //   }
-  // }, [rewardsInfo.status]);
-
+  //call check api interval
   useEffect(() => {
-    if (checkDone) {
-      if (check?.isSuccess) {
-        setRewardsInfo({
-          ...rewardsInfo,
-          challenge_goal: check.result.challenge_goal,
-          time: check.result.time,
-          distance: check.result.distance,
-          calorie: check.result.calorie,
-          status: "pause",
-        });
-        setPercent(
-          Math.floor(rewardsInfo.distance / rewardsInfo.challenge_goal) * 100
-        );
-      } else {
-        handleError(check);
+    if (runState === "pause") {
+      intervalRef.current = window.setInterval(
+        () =>
+          dispatch(
+            rewardRunningCheck({
+              longitude: position.longitude.toString(),
+              latitude: position.latitude.toString(),
+              isRestart: false,
+            })
+          ),
+        1000
+      );
+      return () => window.clearInterval(intervalRef.current);
+    }
+  }, [position.latitude, position.longitude, check?.result]);
+
+  //check handle error
+  useEffect(() => {
+    if (!check?.isSuccess) {
+      switch (check?.code) {
+        case 1053:
+          //로그인 토큰이 없는 경우
+          dispatch(requestToken());
+          return;
+        case 1054:
+          //로그인 토큰 에러
+          setModal(true);
+          return;
+        case 1055:
+        case 1301:
+        case 1302:
+          //로그아웃 상태
+          alert(check?.message);
+          navigate("/login");
+          return;
+        case 1321:
+        case 1322:
+        case 1323:
+          //위치정보 재확인 요청
+          //위치 정보 오류시
+          alert(check?.message);
+          navigator.geolocation.getCurrentPosition(
+            findUserLocation,
+            notFoundLocation
+          );
+          return;
+        case 3041:
+        case 3042:
+          //운동을 시작하지 않았을 경우
+          alert(check?.message);
+          navigate("/");
+          return;
+        case 3043:
+          //시간초과,
+          //운동기록을 찾을 수 없는 경우
+          alert(check?.message);
+          dispatch(
+            rewardRunningEnd({
+              longitude: position.longitude.toString(),
+              latitude: position.latitude.toString(),
+              forceEnd: true,
+            })
+          );
+          navigate("/");
+          return;
+        case 9000:
+          localLogout(document.cookie);
+          navigate("/");
+          return;
       }
     }
-  }, [check, checkDone, rewardsInfo]);
+  }, [check?.code, position]);
 
-  //일시정지 (stop) api 호출
-  useEffect(() => {
-    if (stopDone) {
-      // clearInterval(checkInterval);
-      if (stop?.isSuccess) {
-        setRewardsInfo({
-          ...rewardsInfo,
-          challenge_goal: stop.result.challenge_goal,
-          time: stop.result.time,
-          distance: stop.result.distance,
-          calorie: stop.result.calorie,
-          status: "stop",
-        });
-        setPercent(
-          Math.floor(rewardsInfo.distance / rewardsInfo.challenge_goal) * 100
-        );
-      } else {
-        handleError(stop);
-      }
-    }
-  }, [stop, stopDone, rewardsInfo]);
-
-  useEffect(() => {
-    if (percent === 100) {
-      setRewardsInfo({ ...rewardsInfo, status: "stop" });
-    }
-  }, [percent, rewardsInfo]);
-
+  console.log(runState);
+  console.log("check", check);
   return (
-    <section css={styles.containerStyle}>
-      <div css={styles.runningTimeStyle}>
-        <img src={clock} alt="clock" />
-        <p>
-          진행시간 <span>{rewardsInfo.time}</span>
-        </p>
-      </div>
-      <h1 css={styles.titleStyle}>
-        {rewardsInfo.status === "play"
-          ? `${USER_ID}${MENT}`
-          : "목표를 향해\n달려가고 있어요!"}
-      </h1>
-      <div css={styles.runningGraphStyle(percent)}>
-        <div css={styles.runningGraphInnerStyle}>
-          <div css={styles.textWrapStyle}>
-            <img src={runAlone} alt="running" />
-            <p css={distanceStyle}>
-              {rewardsInfo.distance}
-              <span className="kilometer">km</span>
-            </p>
-            <p css={styles.distanceGoalStyle}>
-              목표거리
-              <span className="goal">{rewardsInfo.challenge_goal}</span>km
-            </p>
-            <div css={styles.startPointStyle} />
-            <div css={styles.endPointStyle} />
-          </div>
-        </div>
-        <RunningButton
-          position={position}
-          rewardsInfo={rewardsInfo}
-          setModalClicked={setModalClicked}
-        />
-      </div>
-      <div css={styles.runningFootStyle}>
-        <img src={fire} alt="fire" css={{ marginRight: 17 }} />
-        <p style={{ fontSize: 14, fontWeight: 500 }}>
-          현재 <span>{rewardsInfo.calorie}</span>Kcal가 소모되었어요.
-        </p>
-      </div>
+    <>
+      {
+        {
+          play: start?.isSuccess && (
+            <RunningLayout
+              runData={start.result}
+              runState={runState}
+              setRunState={setRunState}
+            />
+          ),
+          pause: check?.isSuccess && (
+            <RunningLayout
+              runData={check.result}
+              runState={runState}
+              setRunState={setRunState}
+            />
+          ),
+          stop: stop?.isSuccess && (
+            <RunningLayout
+              runData={stop.result}
+              runState={runState}
+              setRunState={setRunState}
+            />
+          ),
+          cam: end?.isSuccess && (
+            <RunningLayout
+              runData={end.result}
+              runState={runState}
+              setRunState={setRunState}
+            />
+          ),
+        }[runState]
+      }
       <ModalAlert
-        isOpen={modalClicked}
-        title={"재시작하시겠습니까?"}
+        isOpen={modal}
+        title={"알 수 없는 오류가 발생하였습니다.\n다시 로그인 해주세요"}
         size="modal"
-        description="마이페이지에서 비밀번호 변경이 가능해요."
-        buttonCancelTitle="취소"
-        onCancel={() => {
-          setModalClicked(false);
-          // checkInterval = setInterval(() => handleCheck, 10000);
-        }}
-        buttonConfirmTitle="재시작하기"
+        buttonConfirmTitle="확인"
         onConfirm={() => {
-          setModalClicked(false);
-          // checkInterval = setInterval(() => handleRecheck, 10000);
+          setModal(false);
+          navigate("/login");
         }}
       />
-    </section>
+    </>
   );
 };
